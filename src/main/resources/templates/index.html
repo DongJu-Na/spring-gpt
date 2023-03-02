@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="DongJu-Na https://github.com/DongJu-Na/spring-gpt">
+<title>DEMO</title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/css/main.min.css}" rel="stylesheet" />
+<link th:href="@{/css/select2.min.css}" rel="stylesheet" />
+<script defer="defer" src="/js/bootstrap.min.js"></script>
+<script defer="defer" src="/js/jquery.min.js"></script>
+<script defer="defer" src="/js/select2.min.js"></script>
+<script defer="defer" src="/js/global.js"></script>
+
+
+
+</head>
+<body>
+	<div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="wrapper wrapper--w790">
+            <div class="card card-5">
+                <div class="card-heading">
+                    <h2 class="title"> DEMO </h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-row">
+                            <div class="name">문구 1</div>
+	                            <div class="value">
+	                                <div class="input-group">
+	                                    <input class="input--style-5" type="text" id="input1" name="input1">
+	                                </div>
+	                            </div>
+                        </div>
+                        
+                      	<div class="form-row">
+                            <div class="name">문구 2</div>
+	                            <div class="value">
+	                                <div class="input-group">
+	                                    <input class="input--style-5" type="text" id="input2" name="input2">
+	                                </div>
+	                            </div>
+                        </div>
+                        
+                       	<div class="form-row">
+                            <div class="name">문구 3</div>
+	                            <div class="value">
+	                                <div class="input-group">
+	                                    <input class="input--style-5" type="text" id="input3" name="input3">
+	                                </div>
+	                            </div>
+                        </div>
+                        
+                       <div class="form-row">
+                            <div class="name">문구 4</div>
+	                            <div class="value">
+	                                <div class="input-group">
+	                                    <input class="input--style-5" type="text" id="input4" name="input4">
+	                                </div>
+	                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="name">문구 5</div>
+	                            <div class="value">
+	                                <div class="input-group">
+	                                    <input class="input--style-5" type="text" id="input5" name="input5">
+	                                </div>
+	                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="name">성별</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select id="sex" name="sex">
+                                            <option disabled="disabled" selected="selected">선택</option>
+                                            <option value="">무관</option>
+                                            <option value="남자">남자</option>
+                                            <option value="여자">여자</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                       <div class="form-row">
+                            <div class="name">나이</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select id="age" name="age">
+                                            <option disabled="disabled" selected="selected">선택</option>
+                                            <option value="">무관</option>
+                                            <option value="10대">10 대</option>
+                                            <option value="20대">20 대</option>
+                                            <option value="30대">30 대</option>
+                                            <option value="40대">40 대</option>
+                                            <option value="50대">50 대</option>
+                                            <option value="60대">60 대</option>
+                                            <option value="70대">70 대</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="name">카테고리</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="subject">
+                                            <option disabled="disabled" selected="selected">선택</option>
+                                            <option>Subject 1</option>
+                                            <option>Subject 2</option>
+                                            <option>Subject 3</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div>
+                            <button onclick="f_restFulApiSet()" class="btn btn--radius-2 btn--red" type="button">AI 추천</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    	function f_restFulApiSet(){
+    		alert("test");
+    		
+    		$.ajax({
+    		    type : 'post',
+    		    url : '/test',
+    		    async :false,
+    		    headers : { 
+    		      "Content-Type" : "application/json",
+    		      "X-HTTP-Method-Override" : "POST"
+    		    },
+    		    dataType : 'json', 
+    		    data : JSON.stringify({
+    		      "no" : no,
+    		      "name" : name,
+    		      "nick" : nick
+    		    }),
+    		    success : function(result) {
+    		        console.log(result);
+    		    },
+    		    error : function(request, status, error) {
+    		        console.log(error);
+    		    }
+    		})
+    		
+    	}
+    </script>
+</body>
+</html>
