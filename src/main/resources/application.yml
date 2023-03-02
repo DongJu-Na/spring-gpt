@@ -1,0 +1,31 @@
+spring:
+  profiles:
+    active: local
+  thymeleaf:
+    prefix : classpath:templates/
+    suffix : .html
+    cache : false
+        
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  devtools:
+    restart:
+      enabled: true
+server:
+  title: spring-gpt-local
+  port : 8080
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  devtools:
+    restart:
+      enabled: false
+server:
+  title: spring-gpt-prod
+  port : 8081

@@ -1,0 +1,11 @@
+${AnsiColor.RED}                _______  _______  _______ _________ _        _______        _______  _______ _________
+${AnsiColor.BRIGHT_YELLOW}               (  ____ \(  ____ )(  ____ )\__   __/( (    /|(  ____ \      (  ____ \(  ____ )\__   __/
+${AnsiColor.BRIGHT_GREEN}               | (    \/| (    )|| (    )|   ) (   |  \  ( || (    \/      | (    \/| (    )|   ) (   
+${AnsiColor.GREEN}               | (_____ | (____)|| (____)|   | |   |   \ | || |      _____ | |      | (____)|   | |   
+${AnsiColor.BRIGHT_CYAN}               (_____  )|  _____)|     __)   | |   | (\ \) || | ____(_____)| | ____ |  _____)   | |   
+${AnsiColor.BLUE}                     ) || (      | (\ (      | |   | | \   || | \_  )      | | \_  )| (         | |   
+${AnsiColor.BRIGHT_MAGENTA}               /\____) || )      | ) \ \_____) (___| )  \  || (___) |      | (___) || )         | |   
+${AnsiColor.BRIGHT_YELLOW}               \_______)|/       |/   \__/\_______/|/    )_)(_______)      (_______)|/          )_(   
+                                                                                                      
+${AnsiColor.BRIGHT_RED}               Current Spring Profile > ${server.title}
+${AnsiColor.BLUE}               Powered by Spring Boot ${spring-boot.version}
