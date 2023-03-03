@@ -8,13 +8,6 @@
 <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 <link th:href="@{/css/main.min.css}" rel="stylesheet" />
 <link th:href="@{/css/select2.min.css}" rel="stylesheet" />
-<script defer="defer" src="/js/bootstrap.min.js"></script>
-<script defer="defer" src="/js/jquery.min.js"></script>
-<script defer="defer" src="/js/select2.min.js"></script>
-<script defer="defer" src="/js/global.js"></script>
-
-
-
 </head>
 <body>
 	<div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
@@ -24,7 +17,7 @@
                     <h2 class="title"> DEMO </h2>
                 </div>
                 <div class="card-body">
-                    <form method="POST">
+                    <form id="dataForm" method="POST">
                         <div class="form-row">
                             <div class="name">문구 1</div>
 	                            <div class="value">
@@ -74,7 +67,7 @@
                             <div class="name">성별</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
+                                    <div class="rs-select2 js-select-simple select--no-search" style="width: 100%">
                                         <select id="sex" name="sex">
                                             <option disabled="disabled" selected="selected">선택</option>
                                             <option value="">무관</option>
@@ -91,7 +84,7 @@
                             <div class="name">나이</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
+                                    <div class="rs-select2 js-select-simple select--no-search" style="width: 100%">
                                         <select id="age" name="age">
                                             <option disabled="disabled" selected="selected">선택</option>
                                             <option value="">무관</option>
@@ -109,21 +102,13 @@
                             </div>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="name">카테고리</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="subject">
-                                            <option disabled="disabled" selected="selected">선택</option>
-                                            <option>Subject 1</option>
-                                            <option>Subject 2</option>
-                                            <option>Subject 3</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
-                                    </div>
-                                </div>
-                            </div>
+						<div class="form-row">
+                            <div class="name">브랜드 명</div>
+	                            <div class="value">
+	                                <div class="input-group">
+	                                    <input class="input--style-5" type="text" id="maker" name="maker">
+	                                </div>
+	                            </div>
                         </div>
                         
                         
@@ -135,26 +120,52 @@
             </div>
         </div>
     </div>
+    <script  src="/js/bootstrap.min.js"></script>
+	<script  src="/js/jquery.min.js"></script>
+	<script  src="/js/select2.min.js"></script>
+	<script  src="/js/global.js"></script>
     <script>
+    $(function(){
+    	jQuery.fn.serializeObject = function() {
+			  var obj = null;
+			  try {
+			    if(this[0].tagName && this[0].tagName.toUpperCase() == "FORM" ) {
+			      var arr = this.serializeArray();
+			      if(arr){
+			        obj = {};    
+			        jQuery.each(arr, function() {
+			        obj[this.name] = this.value;
+			        });             
+			      }
+			    }
+			  }catch(e) {
+			    alert(e.message);
+			  }finally  {}
+			  return obj;
+			}
+   	});
+
+	
     	function f_restFulApiSet(){
-    		alert("test");
     		
     		$.ajax({
     		    type : 'post',
-    		    url : '/test',
+    		    url : '/api/getRecommendedAdText',
     		    async :false,
     		    headers : { 
     		      "Content-Type" : "application/json",
-    		      "X-HTTP-Method-Override" : "POST"
     		    },
     		    dataType : 'json', 
-    		    data : JSON.stringify({
-    		      "no" : no,
-    		      "name" : name,
-    		      "nick" : nick
-    		    }),
+    		    data : JSON.stringify($("#dataForm").serializeObject()),
     		    success : function(result) {
     		        console.log(result);
+    		        if(result.choices.length > 0){
+    		        	$("#input1 ,#input2 ,#input3 ,#input4 ,#input5").val("");    		        	
+    		        	let data = result.choices[0].message.content.replaceAll("\n","").replaceAll("\\","").split("#");
+    		        	console.log(data);
+    		        	
+						    		        	
+    		        }
     		    },
     		    error : function(request, status, error) {
     		        console.log(error);
@@ -162,6 +173,8 @@
     		})
     		
     	}
+    	
+ 
     </script>
 </body>
 </html>

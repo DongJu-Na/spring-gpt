@@ -4,28 +4,66 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author dj
  * Api 
  */
+@PropertySource("classpath:apikey.yml")
 @RestController
 @RequestMapping("/api")
 public class ApiController {
 	
 	
+	@Value("${openai.api-key:emptykey}")
+	private String apiKey;
 	
-	@RequestMapping(path = {"/ai"})
-	public String getRecommendedAdText() throws Exception {		
-		return "test";
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/getRecommendedAdText")
+	public Map<String,Object> getRecommendedAdText(@RequestBody Map<String, Object> requestParam) throws Exception {
+		
+		Map<String,Object> result = new HashMap<String, Object>();
+		Map<String,Object> Header = new HashMap<String, Object>();
+													  Header.put("Content-Type","application/json");
+														Header.put("Authorization", "Bearer " + apiKey);
+														
+														
+		String content = "브랜드명은 " + requestParam.get("maker")  + "고 " + requestParam.get("sex") + " " + requestParam.get("age")  + " 참고해서 광고 카피라이트 문구 5개 만들어줘 그리고 글머리번호 # 붙여줘";
+		List<Map<String,Object>> tempList = new ArrayList<Map<String,Object>>();
+    Map<String,Object> tempMap = Map.of( "role" , "user", "content" , content );
+    												 tempList.add(tempMap);
+    												 
+    Map<String,Object> apiParam = new HashMap<String , Object>();    
+    												apiParam.put("model", "gpt-3.5-turbo");
+    												apiParam.put("messages", tempList);
+     
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(apiParam);
+					
+		
+		String gptResult = sendApi("https://api.openai.com/v1/chat/completions", "POST", Header, json);
+		if(gptResult != null) {
+			result = mapper.readValue(gptResult,Map.class);
+		}
+		
+		return result;
 	}
 	
 	
@@ -37,21 +75,18 @@ public class ApiController {
     * @return Api Result
     * @throws Exception
     */
-	@SuppressWarnings("rawtypes")
-   	public static String sendApi(String sendUrl, String method ,HashMap<String, Object> Header ,String jsonValue) throws Exception  {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+   	public static String sendApi(String sendUrl, String method ,Map<String, Object> Header ,String jsonValue) throws Exception  {
        String inputLine = null;
        StringBuffer outResult = new StringBuffer();
        BufferedReader in = null;
        HttpsURLConnection conn = null;
        
          try{
-           //LOGGER.info("sendAPI Start Url " + method + " > " + sendUrl);
            URL url = new URL(sendUrl);
                conn = (HttpsURLConnection) url.openConnection();
            
-           //getDoInput() : Server에서 온 데이터를 입력 받을 수 있는 상태인지 여부를 확인한다.(default : true) 
-           //getDoOutput(): Server에서 온 데이터를 출력 할수 있는 상태인지 여부를 확인한다.(default : false)
-           conn.setRequestMethod(method); // GET,POST
+           conn.setRequestMethod(method);
                
            if(method.equals("POST")) {
                conn.setDoInput(true);
