@@ -45,14 +45,44 @@ public class ApiController {
 														Header.put("Authorization", "Bearer " + apiKey);
 														
 														
-		String content = "브랜드명은 " + requestParam.get("maker")  + "고 " + requestParam.get("sex") + " " + requestParam.get("age")  + " 참고해서 광고 카피라이트 문구 5개 만들어줘 그리고 글머리번호 # 붙여줘";
+		String content = "브랜드명은 " + requestParam.get("maker")  + "이며 " + requestParam.get("sex") + " " + requestParam.get("age")  + " 참고해서 광고 카피라이트 문구 5개 만들어줘 그리고 글머리번호 # 붙여줘";
 		List<Map<String,Object>> tempList = new ArrayList<Map<String,Object>>();
-    Map<String,Object> tempMap = Map.of( "role" , "user", "content" , content );
-    												 tempList.add(tempMap);
+		Map<String,Object> tempMap = Map.of( "role" , "user", "content" , content );
+    					   tempList.add(tempMap);
     												 
-    Map<String,Object> apiParam = new HashMap<String , Object>();    
-    												apiParam.put("model", "gpt-3.5-turbo");
-    												apiParam.put("messages", tempList);
+    	Map<String,Object> apiParam = new HashMap<String , Object>();    
+    					   apiParam.put("model", "gpt-3.5-turbo");
+    					   apiParam.put("messages", tempList);
+     
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(apiParam);
+					
+		
+		String gptResult = sendApi("https://api.openai.com/v1/chat/completions", "POST", Header, json);
+		if(gptResult != null) {
+			result = mapper.readValue(gptResult,Map.class);
+		}
+		
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/answer")
+	public Map<String,Object> getAnswer(@RequestBody Map<String, Object> requestParam) throws Exception {
+		
+		Map<String,Object> result = new HashMap<String, Object>();
+		Map<String,Object> Header = new HashMap<String, Object>();
+						   Header.put("Content-Type","application/json");
+						   Header.put("Authorization", "Bearer " + apiKey);
+														
+														
+		List<Map<String,Object>> tempList = new ArrayList<Map<String,Object>>();
+		Map<String,Object> tempMap = Map.of( "role" , "user", "content" , requestParam.get("text"));
+    							 tempList.add(tempMap);
+    												 
+    	Map<String,Object> apiParam = new HashMap<String , Object>();    
+    					   apiParam.put("model", "gpt-3.5-turbo");
+    					   apiParam.put("messages", tempList);
      
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(apiParam);

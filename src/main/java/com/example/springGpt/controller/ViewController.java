@@ -10,4 +10,9 @@ public class ViewController {
 	public String main() {
 		return "index";
 	}
+	
+	@GetMapping(value="/prompt")
+	public String prompt() {
+		return "prompt";
+	}
 }

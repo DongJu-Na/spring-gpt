@@ -161,14 +161,18 @@
     		        console.log(result);
     		        if(result.choices.length > 0){
     		        	$("#input1 ,#input2 ,#input3 ,#input4 ,#input5").val("");    		        	
-    		        	let data = result.choices[0].message.content.replaceAll("\n","").replaceAll("\\","").split("#");
-    		        	console.log(data);
+    		        	let data = result.choices[0].message.content.replaceAll("\n","").replaceAll("\\","").split("#").splice(1,5);
+    		        	if(data.length === 5){
+    		        		for(var x=0; x < data.length ; x++){
+    		        			$(`#input${(x+1)}`).val(data[x]);
+    		        		}	
+    		        	}
     		        	
 						    		        	
     		        }
     		    },
     		    error : function(request, status, error) {
-    		        console.log(error);
+    		        console.error(error);
     		    }
     		})
     		
