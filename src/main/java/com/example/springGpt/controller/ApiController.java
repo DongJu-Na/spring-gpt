@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author dj
  * Api 
  */
+
 @PropertySource("classpath:apikey.yml")
 @RestController
 @RequestMapping("/api")
@@ -38,7 +39,6 @@ public class ApiController {
 	@SuppressWarnings("unchecked")
 	@PostMapping("/getRecommendedAdText")
 	public Map<String,Object> getRecommendedAdText(@RequestBody Map<String, Object> requestParam) throws Exception {
-		
 		Map<String,Object> result = new HashMap<String, Object>();
 		Map<String,Object> Header = new HashMap<String, Object>();
 													  Header.put("Content-Type","application/json");
