@@ -20,4 +20,11 @@ public class ViewController {
 		log.debug("prompt Page access");
 		return "prompt";
 	}
+	
+	@GetMapping(value="/demo")
+	public String demo() {
+		log.debug("demo Page access");
+		return "demo";
+	}
+	
 }

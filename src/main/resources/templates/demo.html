@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>DEMO</title>
+<link th:href="@{/css/reset.css}" rel="stylesheet" />
+<link th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+<body>
+<div id="wrap">
+	<header class="mainHeader">
+		<h2 class="hidden">header</h2>
+		<div id="headerTop" class="clear">
+			<h3 class="hidden">header top bar</h3>
+			<div id="hamburger" class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <ul>
+                <li>
+                    <a href="#">HOME</a>
+                </li>
+                <li>
+					<a href="#" class="memu-open">MOBTUNE</a>
+                </li>
+            </ul>
+            <div class="rightArea">
+            	<ul>
+            		<li>
+                        <div class="nav-selectbox" id="navSelectbox"><span>모바일 ab송출테스트</span></div>
+                    </li>
+                    <li>
+                        <button class="headeralert resetNoticeLogCount">알림</button><span class="adverNoticeLogCount">202</span>						
+                    </li>
+                    <li>
+                        <button class="headermemo type03 " data-type="1">계정 중요사항</button>						
+                    </li>
+                    <li>
+                    	<button class="headermemo type02 " data-type="2">계정 중요사항</button>
+                    </li>
+                    <li>
+                    	<a href="//manage.mobon.net/user/user_change_info">정보수정</a>
+                    </li>
+                </ul>
+            </div>
+		</div>
+		<nav id="nav">
+			<h3 class="hidden">navigation left bar</h3>
+			<div class="logoArea">
+                <a href="/advertiser">
+                	<img src="https://manage.mobon.net/content/images/logo/logo.png">
+               	</a>
+            </div>
+            <div class="authTitle clear">
+                <h4>광고주센터</h4>
+				<a href="#">
+					<div class="logout">로그아웃</div>
+				</a>
+            </div>
+            <div>
+				<div class="gubunBox">
+					<button type="button" class="cAdmin" title="관리자">관리자</button>
+					<button type="button" class="cAgency" title="대행사">대행사</button>
+					<button type="button" class="cAdver" title="광고주">광고주</button>
+				</div>
+				    <ul>
+                    <li class="userName" style="line-height: 20px;">
+                                                    <span class="modalOpen" data-url="/user/user_change" data-width="577" data-hegiht="643" data-scroll="no">
+                                TEST(스크립트O)_테스트계정<br>nadongju                            </span>님
+                                            </li>
+                    <li class="userMoney">잔액: <span>122,990</span>원</li>
+											<div style="margin-top: 8px;line-height: 20px;">
+							영업자 : 나동주<br>
+							어드민 : 나동주	</div>
+					</ul>
+            </div>
+			<div class="menuSearch">
+                <div>
+                    <input type="text" id="searchLeftMenuGrid" placeholder="메뉴명 검색">
+                    <button>검색</button>
+	            </div>
+	                <span>
+	                    <button>검색</button>
+	                </span>
+            </div>
+             <div>
+	                <ul class="depth" data-gubun-btn="">
+	                    <li class="resultManage" data-user-grp-no="0">
+	                        <a class="report" data-href="/performance"><span class="menuName">성과 관리</span></a>
+	                	</li>
+	            
+	                    <li class="subMenu campaign " data-user-grp-no="4">
+	                        <a href="javascript:;" class="icon2"><span class="menuName">광고 등록</span></a>
+
+	               		 </li>
+	            
+	                    <li class="subMenu campaign_detail " data-user-grp-no="4">
+	                        <a href="javascript:;" class="icon3"><span class="menuName">광고 관리</span></a>
+	                	</li>
+	            
+	                    <li class="subMenu report " data-user-grp-no="4">
+	                        <a href="javascript:;" class="icon4"><span class="menuName">광고 보고서</span></a>
+	               		 </li>
+	            
+	                    <li class="analysis-rfm" data-user-grp-no="224">
+	                        <a class="report" data-href="/analysis/analysis_rfm"><span class="menuName">RFM 분석</span></a>
+	                	</li>
+	            
+	                    <li class="analysis-client" data-user-grp-no="224">
+	                        <a class="report" data-href="/analysis/analysis_client"><span class="menuName">고객 가치 분석</span></a>
+	                	</li>
+	            
+	                    <li class="activities-client" data-user-grp-no="4">
+	                        <a class="report" data-href="/analysis/activities_client"><span class="menuName">고객 외부 활동</span></a>
+	                	</li>
+	            
+	                    <li class="analysis-business" data-user-grp-no="4">
+	                        <a class="report" data-href="/analysis/analysis_business"><span class="menuName">업황 분석</span></a>
+	                	</li>
+	            
+	                    <li class="subMenu creative " data-user-grp-no="4">
+	                        <a href="javascript:;" class="icon28"><span class="menuName">크리에이티브 관리</span></a>
+	                	</li>
+	            
+	                    <li class="strategy_management" data-user-grp-no="0">
+	                        <a class="report" data-href="/strategy/frame_management"><span class="menuName">전략 관리</span></a>
+	                	</li>
+	            
+	                    <li class="subMenu product " data-user-grp-no="4">
+	                        <a href="javascript:;" class="icon30"><span class="menuName">상품 관리</span></a>
+	                	</li>
+	            
+	                    <li class="user" data-user-grp-no="0">
+	                        <a class="report" data-href="/user/user_management"><span class="menuName">사용자 관리</span></a>
+	                	</li>
+	            
+	                    <li class="subMenu system " data-user-grp-no="0">
+	                        <a href="javascript:;" class="icon33"><span class="menuName">시스템 관리</span></a>
+	                	</li>
+	            
+	                    <li class="subMenu agency " data-user-grp-no="3">
+	                        <a href="javascript:;" class="icon37"><span class="menuName">대행사 관리</span></a>
+	                	</li>
+	            
+	                    <li class="subMenu billing_management " data-user-grp-no="4">
+	                        <a href="javascript:;" class="icon45"><span class="menuName">결제 관리</span></a>
+	                	</li>
+	            
+	                    <li class="subMenu previous_ver " data-user-grp-no="0">
+	                        <a href="javascript:;" class="icon58"><span class="menuName">관리자페이지 바로가기</span></a>
+	                	</li>
+	            </ul>            
+            </div>
+		</nav>		
+	</header>
+	
+	<section id="sectionWrap">
+		<h2>광고 소재 등록</h2>
+		
+			<div class="autoSetting aiSetting">
+				<div class="sectionLeft">
+					<div class="aiSetMat on">
+						<span>캠페인에 사용할 소재와 카피를 등록합니다.</span>
+						<button type="button" class="autoNextBtn btnStep03" disabled>다음</button>
+						<button type="button" class="btnModify" data-page="aiSetDetail" style="margin-right: 10px; padding: 9px 45px;">이전</button>
+						
+							<div>
+								<div class="leftBox">
+									<article>
+										<h3>
+											CI 등록
+										</h3>
+										<div class="logoIconSet">
+											<div>
+												<h4>로고 (200x67)</h4>
+																							<button type="button" class="btn-del btnDelete" data-imgcode="logo">삭제</button>
+													<label for="ex_filename2" data-imgcode="logo" style="display: none;">업로드</label>
+																						<div class="upload" id="upload0">
+																									<img src="https://manage.mobon.net/ad/imgfile//20221223112742-ziEpfHi7ao-logo.png" alt="" class="preview">
+														<input type="file" name="imgnameSchonlogo" id="ex_filename2" class="hidden" data-file-size="200x67" data-key-name="logo" data-file-type="png,jpg,jpeg" data-imgcode="logo">
+														<input type="hidden" id="logoCheck">
+																							</div>
+											</div>
+											<div>
+												<h4>앱 아이콘 (512x512)</h4>
+																							<button type="button" class="btn-del btnDelete" data-imgcode="appLogo">삭제</button>
+													<label for="ex_filename101" data-imgcode="appLogo" style="display: none;">업로드</label>
+																						<div class="upload" id="upload1">
+																									<img src="	https://manage.mobon.net/ad/imgfile//20221223112742-bQ3UQ1AA8g-appLogo." alt="" class="preview">
+														<input type="file" name="imgNameLogo" id="ex_filename101" class="hidden" data-file-size="512x512" data-key-name="appLogo" data-file-type="png" data-imgcode="appLogo">
+														<input type="hidden" id="appLogoCheck">
+																							</div>
+											</div>
+											<div>
+												<h4>파비콘 (16x16)</h4>
+																							<button type="button" class="btn-del btnDelete" data-imgcode="favicon">삭제</button>
+													<label for="ex_filename102" data-imgcode="favicon" style="display: none;">업로드</label>
+																						<div class="upload" id="upload2">
+																									<img src="https://manage.mobon.net/ad/imgfile//20221223112742-2nhxSws4kS-favicon." alt="" class="preview">
+														<input type="file" name="imgnameFvconlogo" id="ex_filename102" class="hidden" data-file-size="16x16" data-key-name="favicon" data-file-type="ico" data-imgcode="favicon">
+														<input type="hidden" id="faviconCheck">
+																							</div>
+											</div>
+										</div>
+									</article>
+								</div>
+								
+								<div class="rightBox">
+									<article class="imageSetArticle">
+										<h3 style="display: inline-block;">
+											이미지 소재 등록
+											<div class="btn" style="float: right;">
+												<a href="#"><button type="button" class="btnNewImage">+ 새로운 소재 등록 하기</button></a>
+												<a href="javascript:void(0);"><button type="button" class="btnSaveImage" style="display: none;">저장</button></a>
+												<a href="javascript:newImageHide();"><button type="button" class="btnCancelImage btn-cancel" style="display: none;">취소</button></a>
+											</div>
+										</h3>
+																		<div class="imageSet">
+											<div class="topArea">
+												<div class="groupSelect">
+													<input type="hidden" class="materialSelNo">
+													<div class="tit">
+														선택하세요.											</div>
+													<div class="imageSetList lists" style="display: none;">
+														<div class="inputBox">
+															<i></i><input type="text" class="searchGrp" data-type="general" placeholder="검색">
+														</div>
+														<ul class="ul_general"><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="72590">소재미리보기 삭제 테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="71664">사이즈등록테슷흐</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="71633">test</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="70377">비즈보드용 테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="58081">B그룹_청소재</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="69401">20230208_bizBoard</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="69161">20230207_bizBoard</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="17964">다바걸청소재 (찐)</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="17965">다바걸 빨간소재 (찐)</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="68324">20230131_bizBoard</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="67706">홀로그램배너_b그룹</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="58080">A그룹_빨간색</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="66045">나동주_테스트</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="49">은영 소재 추가_최초 6/24_1</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="23102">22</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="24350">등록TT</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="65148">1</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="65151">2</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="65271">홀로그램_autoset_등록테스트</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="24582">a그룹</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="62834">TA_쿠팡CPS테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="63313">TA_쿠팡CPS테스트</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="55879">20220913_비즈보드</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="22899">노랑색배너22</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="22231">등록테스트</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="63399">1128테스트</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="65360">테스트등록</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="66598">소재테스트0104</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="22139">은영 소재1111</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="65308">홀로그램배너_autoset_1219</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="65299">SIZETEST</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="63400">1128테스트_2</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="23111">테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="11">캠페인 연결_초록색 소재</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="19">캠페인 연결_초록색 소재2</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="65293">홀로그램_등록테스트_센터</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="5">캠페인 연결_주황색 소재_수정</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="65057">홀로그램배너_티아모</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="64770">홀로그램송출테스트_20221213</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="64333">홀로그램배너_20221207</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="31429">플러스콜_08</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="24583">등록테슷흐_0419</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="50">등록테스트 </a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="63526">1129테스트_2</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="63525">1129테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="63437">1128테스트_3</a></span></li><li class=""><span class="groupLabel wating">모비온 승인</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="17">cdn 테스트_은영</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="30909">플콜_테스트_cdn</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="62841">소재 테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="60022">ddd</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="62893">test</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="63052">분홍색</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="63055">파란색</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="61557">mobon</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="58249">카카오비즈보드테스트_20221013</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="31440">플러스콜_0808</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="61948">20221110_test_2</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="61946">20221101_test</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="61015">20221101_test_</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="60256">20221028_mng4_test</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="58171">20221012_2_test</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="58126">20221012_test</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="57384">20220930_비즈보드_test_2</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="57348">20220930_비즈보드_test</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="56025">20220913_비즈보드</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="56024">20220913_비즈보드</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="56023">20220913_비즈보드</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="56022">20220913_비즈보드</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="56021">20220913_비즈보드</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="56020">20220913_비즈보드</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="56019">20220913_비즈보드</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="52088">비즈보드 테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="46961">dd</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="28">다바걸 빨간색 소재</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="37465">플러스콜 꽃배달 테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="31921">학원_테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="31442">플러스콜 08테스트 중</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="31417">플러스콜 08 변경</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="30882">플러스콜_테스트입니다</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="30873">플러스콜_테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="16941">등록테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="25363">test</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="22912">1</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="22823">노랑색 배너</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="22121">등록테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="22085">11</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="18418">캠페인 반려 수정</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="20399">DD222</a></span></li><li class=""><span class="groupLabel wating">모비온 승인</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="18416">캠페인승인</a></span></li><li class=""><span class="groupLabel wating">모비온 승인</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="18415">이벤트승인</a></span></li><li class=""><span class="groupLabel denied">모비온 반려</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="18417">이벤트반려</a></span></li><li class=""><span class="groupLabel wating">모비온 승인</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="17478">모비온 소재1</a></span></li><li class=""><span class="groupLabel wating">모비온 승인</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="17479">모비온 소재 2</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="27">다바걸 청 소재</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="52">rec 등록테스트</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="35">등록테스트 11</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="18">소재_성철</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="20">캠페인 연결_주황색 소재2</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="13">노란색 소재2</a></span></li><li class=""><span class="groupLabel accept">모비온 대기</span> <span class="copyTit"><a href="javascript:void(0);" class="generalGrpList" data-type="01" data-no="7">이벤트 연결_노란색 소재</a></span></li></ul>
+													</div>
+												</div>
+												<button type="button" id="btnMaterial" disabled="">연결</button>
+												<div class="bgColor">
+													<span title="이미지 배너의 빈 부분을 배경색으로 채웁니다.">배경색(BG)</span>
+													<div id="imgBkgSample" style="display: block; float: left; position: relative; width: 50px; height: 28px; border: 1px solid rgb(218, 218, 218); border-radius: 4px 0px 0px 4px; background-color: rgb(255, 255, 255);"></div>
+													<input type="text" name="bkColor" id="colorPicker" class="imgBkg" maxlength="7" style="display: block; float:left; width: 100px; height:30px; text-align: center; border:1px solid #dadada;border-left: 0; text-transform: uppercase;font-size:13px;border-radius: 0 4px 4px 0; " value="#FFFFFF">
+												</div>
+												<input type="hidden" name="linkMaterial" id="linkMaterial" data-name="선택하세요." value="">
+											</div>
+											<div class="cntArea">
+																							<div class="noData"></div>
+													<ul id="imageGrpList" style="display: none; margin-top: 0px; min-height: 170px;">
+													</ul>
+																					</div>
+											<input type="hidden" class="imageSrcInp" value="">
+										</div>
+		
+										<div class="creativeGeneral" style="display: none; box-shadow: none; padding: 0px;">
+											<div class="registContainer">
+												<h4>소재 그룹명</h4>
+												<div>
+													<input type="text" name="imageTitle" id="imageTitle" value="" placeholder="그룹 이름을 입력해주세요">
+												</div>
+											</div>
+											<div class="registContainer">
+												<h4>배경색</h4>
+												<div>
+													<div class="bgColor">
+														<div id="imgBkgSampleNew" style="display: block; float: left; position: relative; width: 50px; height: 30px; border: 1px solid rgb(218, 218, 218); border-radius: 4px 0px 0px 4px; background-color: rgb(255, 255, 255);"></div>
+														<input type="text" name="bkColorNew" id="colorPickerNew" class="imgBkgNew" value="#FFFFFF" maxlength="7" style="display: block;float:left;width: 100px;height:30px; text-align: center;border:1px solid #dadada;border-left: 0; text-transform: uppercase;font-size:13px;border-radius: 0 4px 4px 0; ">
+													</div>
+												</div>
+											</div>
+											<div class="registContainer">
+												<h4>홀로그램 배너 등록</h4>
+												<div>
+													<div>
+														<i></i>
+														<div>
+															<div style="display: block; float: left; position: relative; width: 91px; height: 27px; border: 1px solid #dadada; border-radius: 4px 0 0 4px;">
+																<label for="dropzone_upload_hol" style="display: block;position: relative;width: 90px;height: 25px;border: 1px solid #dadada;border-radius: 4px 0 0 4px;text-align: center;background-color: #f5f5f5;line-height: 23px;">파일첨부</label>
+															</div>
+															<input type="file" class="hidden" name="dropzone_upload_hol" id="dropzone_upload_hol" data-pc-width="1595" data-mo-width="400" data-key-name="dropzone_upload_hol" data-file-type="glb,usdz" style="width: 1px;position: fixed;">
+															<input type="text" name="hologramName" id="hologramName" value="" style="width: auto;" disabled="">
+															<button type="button" class="hol_prev" id="hologramPreviewBtn" style="margin-left: 10px; background-color:#ccc;">
+																<a id="hologramPreview" data-url="/creative/hologram_preview?&amp;adGrpTpCode=01" data-width="650" data-hegiht="600" data-scroll="no" data-hologramimagepath="" style="color: white;">
+																	미리보기
+																</a>
+															</button>
+														</div>
+													</div>
+													<div class="hologram_upload fileBox" id="hologram_upload">
+														<input type="hidden" name="hologramFile">
+													</div>
+												</div>
+												<div id="hologramUploadFail"></div>
+											</div>
+											<div class="registContainer">
+												<h4>이미지 등록</h4>
+												<div>
+													<div class="upload dropzone dz-clickable" id="dropzone_upload">
+														<i></i>
+														<span>원하시는 파일을 이곳에 올려주세요</span>
+													<div class="dz-default dz-message"><span></span></div></div>
+												</div>
+											</div>
+											<div class="registContainer">
+												<h4>업로드 이미지</h4>
+												<div class="bannerContainer" style="max-width: 850px;">
+													<div class="creatviePrdImgLists dropzonePreview">
+														<ul id="mobonImageUpload"></ul>
+													</div>
+												</div>
+											</div>
+											<div class="registContainer">
+												<h4>업로드 실패 이미지</h4>
+												<div class="failContainer">
+													<div class="creatviePrdImgLists">
+														<ul id="fileUploadFile"></ul>
+													</div>
+												</div>
+											</div>
+											<div class="registContainer">
+												<h4>등록된 이미지</h4><div class="bannerContainer">
+													<div class="creatviePrdImgLists" id="mobonImageUpload">
+														<ul id="imageTemplateList" class="dropzonePreview"></ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									</article>
+																<article class="copySetArticle">
+										<h3 style="display: inline-block;">
+											카피 소재 등록
+											<div class="btn" style="float: right;">
+												<a href="#"><button type="button" class="btnNewCopy">AI 카피 추천</button></a>
+												<a href="#"><button type="button" class="btnNewCopy">+ 새로운 카피 등록 하기</button></a>
+												<a href="javascript:void(0);"><button type="button" class="btnSaveCopy" style="display: none;">저장</button></a>
+												<a href="javascript:newCopyHide();"><button type="button" class="btnCancelCopy btn-cancel" style="display: none;">취소</button></a>
+											</div>
+										</h3>
+										<div class="copySet">
+											<div class="topArea">
+												<div class="groupSelect">
+													<input type="hidden" class="copySelNo">
+													<div class="tit">
+														선택하세요.											</div>
+													<div class="copySetList lists" style="display: none;">
+														<div class="inputBox">
+															<i></i><input type="text" class="searchGrp" data-type="copy" placeholder="검색">
+														</div>
+														<ul class="ul_copy">
+														</ul>
+													</div>
+												</div>
+												<button type="button" id="btnCopy" disabled="">연결</button>
+												<input type="hidden" name="linkCopy" id="linkCopy" data-name="선택하세요." value="">
+											</div>
+											<div class="cntArea">
+												<ul class="copyData">
+													<li>
+														<span class="title">카피 문구 (1)</span>
+														<input type="text" name="cpCommentView[01]" data-val="1" disabled="" value="">
+														<span class="sideTxt">3~7자 이내</span>
+													</li>
+													<li>
+														<span class="title">카피 문구 (2)</span>
+														<input type="text" name="cpCommentView[02]" data-val="2" disabled="" value="">
+														<span class="sideTxt">8~15자 이내</span>
+													</li>
+													<li>
+														<span class="title">카피 문구 (3)</span>
+														<input type="text" name="cpCommentView[03]" data-val="3" disabled="" value="">
+														<span class="sideTxt"> 15~25자 이내</span>
+													</li>
+													<li>
+														<span class="title">카피 문구 (4)</span>
+														<input type="text" name="cpCommentView[04]" data-val="4" disabled="" value="">
+														<span class="sideTxt">20~40자 이내</span>
+													</li>
+													<li>
+														<span class="title">카피 문구 (5)</span>
+														<input type="text" name="cpCommentView[05]" data-val="5" disabled="" value="">
+														<span class="sideTxt"> 20~40자 이내</span>
+													</li>
+												</ul>
+												<ul class="copyTxt" style="display: none;">
+													<li class="positionAdjustment">
+														<span class="title">카피 그룹</span>
+														<input type="text" name="cpTitle" placeholder="그룹 이름을 입력해주세요">
+													</li>
+													<li class="positionAdjustment">
+														<span class="title">카피 문구 (1)</span>
+														<input type="text" name="cpComment[01]" data-val="1" onkeyup="textCntCheck(this);">
+														<span class="byte"><span class="green" id="cpComment1"></span>/(3~7자 이내)</span>
+													</li>
+													<li class="positionAdjustment">
+														<span class="title">카피 문구 (2)</span>
+														<input type="text" name="cpComment[02]" data-val="2" onkeyup="textCntCheck(this);">
+														<span class="byte"><span class="green" id="cpComment2"></span>/(8~15자 이내)</span>
+													</li>
+													<li class="positionAdjustment">
+														<span class="title">카피 문구 (3)</span>
+														<input type="text" name="cpComment[03]" data-val="3" onkeyup="textCntCheck(this);">
+														<span class="byte"><span class="green" id="cpComment3"></span>/(15~25자 이내)</span>
+													</li>
+													<li class="positionAdjustment">
+														<span class="title">카피 문구 (4)</span>
+														<input type="text" name="cpComment[04]" data-val="4" onkeyup="textCntCheck(this);">
+														<span class="byte"><span class="green" id="cpComment4"></span>/(20~40자 이내)</span>
+													</li>
+													<li class="positionAdjustment">
+														<span class="title">카피 문구 (5)</span>
+														<input type="text" name="cpComment[05]" data-val="5" onkeyup="textCntCheck(this);">
+														<span class="byte"><span class="green" id="cpComment5"></span>/(20~40자 이내)</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</article>
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+	</section>
+	
+	<!-- script -->
+	<script  src="/js/jquery.min.js"></script>
+	<script>
+	
+	</script>
+	
+	
+	
+</div>
+</body>
+</html>

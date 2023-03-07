@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.service.OpenAiService;
 
 /**
  * @author dj
@@ -36,8 +41,10 @@ public class ApiController {
 	private String apiKey;
 	
 	
+	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/getRecommendedAdText")
+	@Deprecated
 	public Map<String,Object> getRecommendedAdText(@RequestBody Map<String, Object> requestParam) throws Exception {
 		Map<String,Object> result = new HashMap<String, Object>();
 		Map<String,Object> Header = new HashMap<String, Object>();
@@ -68,6 +75,7 @@ public class ApiController {
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/answer")
+	@Deprecated
 	public Map<String,Object> getAnswer(@RequestBody Map<String, Object> requestParam) throws Exception {
 		
 		Map<String,Object> result = new HashMap<String, Object>();
@@ -94,7 +102,34 @@ public class ApiController {
 		}
 		
 		return result;
-	}
+	} 
+	
+  @PostMapping("/question")
+  public void sendQuestion() {
+  		Duration m = Duration.ofMinutes(5);
+      OpenAiService service = new OpenAiService(apiKey,m);
+      
+      
+      
+      ChatMessage cm = new ChatMessage();
+      						cm.setContent("임플케어치약에 대해서 광고문구 10개 20자에서 25자 이내로 만들어줘");
+      						cm.setRole("user");
+      						
+      List<ChatMessage> tempList = new ArrayList<ChatMessage>();
+      									tempList.add(cm);
+      							 
+      ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
+              .messages(tempList)
+              .model("gpt-3.5-turbo")
+              .build();
+      ChatCompletionResult a = service.createChatCompletion(chatCompletionRequest);// .getChoices().forEach(System.out::println)
+      
+      if(a != null) {
+      	System.out.println(a.getChoices().get(0).getMessage().getContent());
+      }
+      
+      
+  }
 	
 	
    /**
@@ -115,8 +150,7 @@ public class ApiController {
          try{
            URL url = new URL(sendUrl);
                conn = (HttpsURLConnection) url.openConnection();
-           
-           conn.setRequestMethod(method);
+               conn.setRequestMethod(method);
                
            if(method.equals("POST")) {
                conn.setDoInput(true);
