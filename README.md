@@ -13,3 +13,15 @@ open Ai에서 APi Key 발급 이후 프로젝트 클래스패스에 apikey.yml �
   ```sh
   openai:
     apikey : your api key
+
+## Skill Stack
+|기술|버전|
+|----|----|
+|spring|6.0.5|
+|spring-boot|3.1.0|
+|thymeleaf|3.1.1|
+|lombok|1.18.22|
+|devtools|3.1.0|
+|logback|1.4.5|
+|tomcat-embed|10.1.5|
+
