@@ -26,11 +26,14 @@ import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author dj
  * Api 
  */
 
+@Slf4j
 @PropertySource("classpath:apikey.yml")
 @RestController
 @RequestMapping("/api")
@@ -105,14 +108,16 @@ public class ApiController {
 	} 
 	
   @PostMapping("/question")
-  public void sendQuestion() {
+  public Map<String,Object> sendQuestion(@RequestBody Map<String, Object> requestParam) {
+  		Map<String,Object> result = new HashMap<String, Object>();
+  	
   		Duration m = Duration.ofMinutes(5);
       OpenAiService service = new OpenAiService(apiKey,m);
       
       
       
       ChatMessage cm = new ChatMessage();
-      						cm.setContent("임플케어치약에 대해서 광고문구 10개 20자에서 25자 이내로 만들어줘");
+      						cm.setContent(requestParam.get("text").toString());
       						cm.setRole("user");
       						
       List<ChatMessage> tempList = new ArrayList<ChatMessage>();
@@ -125,10 +130,11 @@ public class ApiController {
       ChatCompletionResult a = service.createChatCompletion(chatCompletionRequest);// .getChoices().forEach(System.out::println)
       
       if(a != null) {
-      	System.out.println(a.getChoices().get(0).getMessage().getContent());
+      	log.debug(a.getChoices().get(0).toString());
+      	result.put("msg",a.getChoices().get(0).getMessage().getContent());
       }
       
-      
+      return result;
   }
 	
 	
@@ -166,8 +172,8 @@ public class ApiController {
                conn.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
            }
           
-           conn.setConnectTimeout(10000);
-           conn.setReadTimeout(10000);
+           conn.setConnectTimeout(300000);
+           conn.setReadTimeout(300000);
            
            if(method.equals("POST")) {
                OutputStream os = conn.getOutputStream();
