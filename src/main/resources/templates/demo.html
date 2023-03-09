@@ -429,12 +429,11 @@
 	    </div>
 	    <div class="chat-box-body">
 	      <div class="chat-settings">
-	      	  <span class="chat-settings-spanMsg">회사명</span> <input id="companyName" type="text">
-	      	  <span class="chat-settings-spanMsg">광고할 상품명</span> <input id="productName" type="text">
-	      	  <span class="chat-settings-spanMsg">회사의 제품 설명</span>  <input id="productInformation" type="text">
-	      	  <span class="chat-settings-spanMsg">브랜드 메세지</span>  <input id="brandMessage" type="text">
-	      	  <span class="chat-settings-spanMsg">핵심 키워드</span>  <input id="coreKeyword" type="text">
-	      	  <span class="chat-settings-spanMsg">경쟁업체의 제품 또는 서비스와의 차별화 포인트 </span> <input id="difference" type="text">
+	      	  <span class="chat-settings-spanMsg">회사명</span> <input id="companyNameInp" type="text">
+	      	  <span class="chat-settings-spanMsg">회사 카테고리</span> <input id="categoryInp" type="text">
+	      	  <span class="chat-settings-spanMsg">광고 목적</span>  <input id="purposeInp" type="text">
+	      	  <span class="chat-settings-spanMsg">타게팅 성별</span>  <input id="sexInp" type="text">
+	      	  <span class="chat-settings-spanMsg">타게팅 나이</span>  <input id="ageInp" type="text">
 	      	  
 	      	  <button type="button" style="float: right;margin-top: 10px;" onclick="f_getTest()">문구 생성</button>
 	      </div>
@@ -544,17 +543,21 @@
 		}
 		
 		function f_getTest(){
-			
 			var gt = `
-				회사명 : ${$("#companyName").val()}
-				광고할 상품명 : ${$("#productName").val()}
-				회사의 제품 설명 : ${$("#productInformation").val()}
-				브랜드 메시지 : ${$("#brandMessage").val()}
-				핵심 키워드 : ${$("#coreKeyword").val()}
-				경쟁 업체의 제품 또는 서비스와의 차별화 포인트 : ${$("#difference").val()}
-				광고 문구에서는 byte는 제외
+				회사명 : ${$("#companyNameInp").val()}
+				회사 카테고리 : ${$("#categoryInp").val()}
+				광고목적 : ${$("#purposeInp").val()}
+				타겟팅 성별 : ${$("#sexInp").val()}
+				타겟팅 나이: ${$("#ageInp").val()}
+				회사 카테고리, 광고목적은 광고문구에서 제외해서 광고문구를 만들어야 함.
 
-				위 정보를 이용해서 광고 문구  각각 공백 포함 21Byte,30Byte,50Byte,80Byte,80Byte 하나씩 순서대로 만들어 줘
+				한글 10자 이내 (회사명 포함 불가)
+				한글 15자 이내 (회사명 포함 불가)
+				한글 25자 이내 (회사명 포함 가능)
+				한글 40자 이내 (회사명 포함 가능)
+				한글 40자 이내 (회사명 포함 가능)
+
+				위 정보를 이용해서 일반적으로 사용할 수 있는 자연스러운  광고 문구를 공백과 특수문자 포함해서 한글  글자수 체크 해서 작성해줘
 			`;
 			
 			 $.ajax({
@@ -571,11 +574,9 @@
 	    		    success : function(data, textStatus, jqXHR ) {
 	    		    	if(data){
 	    		    		console.log(data);
-	    		    		var _msg = `광고 문구가 생성 되었습니다. 클립보드에 복사하시겠습니까? \n
-    		    						=======================================
-		    								${data["msg"]}
-		    							=======================================
-		    							`;
+	    		    		var _msg = "광고 문구가 생성 되었습니다. 클립보드에 복사하시겠습니까? \n\n\n========================================="
+		    								 + data["msg"] + 
+	    		    					"\n\n\n========================================";
 	    		    		if(confirm(_msg)){
 	    		    			console.log("네");
 	    		    			f_copy(data["msg"]);
