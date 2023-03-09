@@ -30,7 +30,7 @@ jobs:
           host: ${{ secrets.NHN_HOST }}
           username  : ${{ secrets.NHN_USERNAME }}
           password : ${{ secrets.NHN_PASSWORD }}
-           script: |
+          script: |
            cd /ndj/
            git fetch --all
            git pull origin main
