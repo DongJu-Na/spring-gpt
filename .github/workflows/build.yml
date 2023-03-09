@@ -26,7 +26,8 @@ jobs:
           password : ${{ secrets.NHN_PASSWORD }}
           script: |
            cd /ndj/
-           
+           wget https://github.com/DongJu-Na/spring-gpt/archive/refs/heads/main.zip
+
       - name: Checkout code
         uses: actions/checkout@v2
           
