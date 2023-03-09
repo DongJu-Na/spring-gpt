@@ -28,8 +28,8 @@ jobs:
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.NHN_HOST }}
+          username  : ${{ secrets.NHN_USERNAME }}
           password : ${{ secrets.NHN_PASSWORD }}
-          key: ${{ secrets.NHN_KEY }}
            script: |
            cd /ndj/
            git fetch --all
