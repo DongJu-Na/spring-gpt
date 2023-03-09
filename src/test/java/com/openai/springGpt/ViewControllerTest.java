@@ -1,4 +1,4 @@
-package com.example.springGpt;
+package com.openai.springGpt;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,7 +39,7 @@ public class ViewControllerTest {
 	}
 	
 	@Test
-	public void main() throws Exception {
+	public void testIndex() throws Exception {
 		mvc.perform(get("/index"))
 			 .andDo(print())
 			 .andExpect(content().contentType(MediaType.valueOf("text/html;charset=UTF-8")))
@@ -47,7 +47,7 @@ public class ViewControllerTest {
 	}
 	
 	@Test
-	public void prompt() throws Exception {
+	public void testPrompt() throws Exception {
 		mvc.perform(get("/prompt"))
 		 .andDo(print())
 		 .andExpect(content().contentType(MediaType.valueOf("text/html;charset=UTF-8")))

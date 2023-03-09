@@ -1,4 +1,4 @@
-package com.example.springGpt;
+package com.openai.springGpt;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openai.springGpt.SpringGptApplication;
 import com.openai.springGpt.controller.ApiController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
   */
 @Slf4j
 @DisplayName("api 컨트롤러 테스트")
+@ContextConfiguration(classes = SpringGptApplication.class)
 @WebMvcTest(ApiController.class)
 public class ApiControllerTest {
 	
