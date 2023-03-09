@@ -458,7 +458,7 @@
     
     	  
     })
-    
+      var reqPenddingFlag = false;
    	  var INDEX = 0; 
    	  $("#chat-submit").click(function(e) {
     	    e.preventDefault();
@@ -494,7 +494,13 @@
     	    str += "          <span class=\"msg-avatar\">";
     	    str += "            <img src=\"/img/icon-48x48.png\">";
     	    str += "          <\/span>";
-    	    str += "          <div class=\"cm-msg-text\">";
+    	    
+    	    if(type == 'self')
+    	    	str += "          <div class=\"cm-msg-text\">";	
+    	    else
+    	    	str += "          <div class=\"cm-msg-text loading\">";
+    	    
+    	    
     	    str += msg;
     	    str += "          <\/div>";
     	    str += "        <\/div>";
@@ -513,6 +519,11 @@
 		}
 		
 		function f_sendMsg(_msg){
+			if(reqPenddingFlag){
+				alert("메세지를 응답 중 입니다. 잠시 후 이용해주세요.");
+				return false;
+			}
+			
 			 $.ajax({
 	    		    type : 'post',
 	    		    url : '/api/question',
@@ -523,19 +534,20 @@
 	    		    dataType : 'json', 
 	    		    data : JSON.stringify({
 						"text" : _msg
-					}),
-	    		    success : function(data, textStatus, jqXHR ) {
-	    		    	console.log(data);
-	    		    	console.log(textStatus);
-	    		    	console.log(jqXHR);
-	    		    	
+					})
+					,beforeSend: function( xhr ) {
+						reqPenddingFlag = true;
+						generate_message("", 'user');
+					}
+	    		    ,success : function(data, textStatus, jqXHR ) {
 	    		    	if(data){
-	    		    		generate_message(data['msg'], 'user');
+	    		    		$(`#cm-msg-${INDEX} > .cm-msg-text`).text(data["msg"]+"").removeClass("loading");
+	    		    		$(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000)
 	    		    	}
 	    		        console.log(data);
 	    		        //  
 	    		    },complete : function(jqXHR , textStatus){
-	    		    	
+	    		    	reqPenddingFlag = false;
 	    		    },error : function(request, status, error) {
 	    		        console.error(error);
 	    		    }
@@ -543,6 +555,43 @@
 		}
 		
 		function f_getTest(){
+			if(reqPenddingFlag){
+				alert("메세지를 응답 중 입니다. 잠시 후 이용해주세요.");
+				return false;
+			}
+			
+			if($("#companyNameInp").val().trim() === ''){
+				alert("회사명을 입력해주세요");
+				$("#companyNameInp").focus();
+				return false;
+			}
+			
+			if($("#categoryInp").val().trim() === ''){
+				alert("회사 카테고리를 입력해주세요");
+				$("#categoryInp").focus();
+				return false;
+			}
+			
+			if($("#purposeInp").val().trim() === ''){
+				alert("광고 목적을 입력해주세요");
+				$("#purposeInp").focus();
+				return false;
+			}
+			
+			if($("#sexInp").val().trim() === ''){
+				alert("성별을 입력해주세요");
+				$("#sexInp").focus();
+				return false;
+			}
+			
+			if($("#ageInp").val().trim() === ''){
+				alert("타게팅 나이를 입력해주세요");
+				$("#ageInp").focus();
+				return false;
+			}
+			
+			
+			
 			var gt = `
 				회사명 : ${$("#companyNameInp").val()}
 				회사 카테고리 : ${$("#categoryInp").val()}
@@ -571,7 +620,10 @@
 	    		    data : JSON.stringify({
 						"text" : gt
 					}),
-	    		    success : function(data, textStatus, jqXHR ) {
+					beforeSend: function( xhr ) {
+						reqPenddingFlag = true;
+					}
+	    		    ,success : function(data, textStatus, jqXHR ) {
 	    		    	if(data){
 	    		    		console.log(data);
 	    		    		var _msg = "광고 문구가 생성 되었습니다. 클립보드에 복사하시겠습니까? \n\n\n========================================="
@@ -586,7 +638,7 @@
 	    		    	}
 	    		        
 	    		    },complete : function(jqXHR , textStatus){
-	    		    	
+	    		    	reqPenddingFlag = false;
 	    		    },error : function(request, status, error) {
 	    		        console.error(error);
 	    		    }
@@ -595,6 +647,11 @@
 		
 		
 		function f_buttonController($el){
+			if(reqPenddingFlag){
+				alert("메세지를 응답 중 입니다. 잠시 후 이용해주세요.");
+				return false;
+			}
+			
 			$(".chat-box-tab-btnDiv").removeClass("activeTab");
 			$($el).addClass("activeTab");
 			
