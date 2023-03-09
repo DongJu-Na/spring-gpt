@@ -24,11 +24,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Deploy to NHN Cloud
-        uses: DongJu-Na/spring-gpt@main
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@v0.1.8
         with:
-          version: "1.0.0"
-          path: "build/libs/*.jar"
-          command: "java -jar"
-          deploy-env: "production"
-          api-key: ${{ secrets.NHNCLOUD_API_KEY }}
+          host: ${{ secrets.NHN_HOST }}
+          password : ${{ secrets.NHN_PASSWORD }}
+          key: ${{ secrets.NHN_KEY }}
+           script: |
+           cd /ndj/
+           git fetch --all
+           git pull origin main
+          
