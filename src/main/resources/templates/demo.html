@@ -670,6 +670,10 @@
 		}
 		
 		function f_copy(text){
+			if (location.protocol !== "https:") {
+				  return false;
+				}
+			
 		    var content = text;
 
 		    navigator.clipboard.writeText(content)
