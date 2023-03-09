@@ -1,4 +1,4 @@
-package com.example.springGpt.service;
+package com.openai.springGpt.service;
 
 import org.springframework.stereotype.Service;
 

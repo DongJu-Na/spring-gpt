@@ -571,12 +571,12 @@
 	    		    success : function(data, textStatus, jqXHR ) {
 	    		    	if(data){
 	    		    		console.log(data);
-	    		    		if(
-	    		    		confirm(`광고 문구가 생성 되었습니다. 클립보드에 복사하시겠습니까? \n
-	    		    				===============================================
-	    		    					${data["msg"]}
-	    		    				===============================================
-	    		    				`)){
+	    		    		var _msg = `광고 문구가 생성 되었습니다. 클립보드에 복사하시겠습니까? \n
+    		    						=======================================
+		    								${data["msg"]}
+		    							=======================================
+		    							`;
+	    		    		if(confirm(_msg)){
 	    		    			console.log("네");
 	    		    			f_copy(data["msg"]);
 	    		    		}else{
@@ -612,15 +612,15 @@
 		}
 		
 		function f_copy(text){
-			  var $textarea = document.createElement("textarea");
- 				 document.body.appendChild($textarea);
-			  
-			  $textarea.value = text;
-			  $textarea.select();
-			  
-			  // 복사 후 textarea 지우기
-			  document.execCommand('copy');
-			  document.body.removeChild($textarea);
+		    var content = text;
+
+		    navigator.clipboard.writeText(content)
+		        .then(() => {
+		        console.log("클립보드에 값이 복사 되었습니다.")
+		    })
+		        .catch(err => {
+		        console.log('값 복사 중 오류 발생', err);
+		    })
 		}
 		 
 		

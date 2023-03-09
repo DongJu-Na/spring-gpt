@@ -1,4 +1,4 @@
-package com.example.springGpt.controller;
+package com.openai.springGpt.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatCompletionResult;
-import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.service.OpenAiService;
+import com.openai.springGpt.dto.completion.chat.ChatCompletionRequest;
+import com.openai.springGpt.dto.completion.chat.ChatCompletionResult;
+import com.openai.springGpt.dto.completion.chat.ChatMessage;
+import com.openai.springGpt.service.OpenAiService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -109,28 +110,26 @@ public class ApiController {
 	
   @PostMapping("/question")
   public Map<String,Object> sendQuestion(@RequestBody Map<String, Object> requestParam) {
+  		String text = requestParam.get("text").toString();
   		Map<String,Object> result = new HashMap<String, Object>();
-  	
-  		Duration m = Duration.ofMinutes(5);
-      OpenAiService service = new OpenAiService(apiKey,m);
-      
-      
+  		
+      OpenAiService service = new OpenAiService(apiKey,Duration.ofMinutes(5));
       
       ChatMessage cm = new ChatMessage();
-      						cm.setContent(requestParam.get("text").toString());
+      						cm.setContent(text);
       						cm.setRole("user");
       						
       List<ChatMessage> tempList = new ArrayList<ChatMessage>();
       									tempList.add(cm);
       							 
       ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-              .messages(tempList)
+              .messages(Collections.singletonList(cm))
               .model("gpt-3.5-turbo")
               .build();
       ChatCompletionResult a = service.createChatCompletion(chatCompletionRequest);// .getChoices().forEach(System.out::println)
       
       if(a != null) {
-      	log.debug(a.getChoices().get(0).toString());
+      	log.debug(a.toString());
       	result.put("msg",a.getChoices().get(0).getMessage().getContent());
       }
       

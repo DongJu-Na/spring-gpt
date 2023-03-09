@@ -1,4 +1,4 @@
-package com.example.springGpt;
+package com.openai.springGpt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

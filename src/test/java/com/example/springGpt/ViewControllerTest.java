@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.example.springGpt.controller.ViewController;
+import com.openai.springGpt.controller.ViewController;
 
 import lombok.extern.slf4j.Slf4j;
 
