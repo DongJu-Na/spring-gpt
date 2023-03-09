@@ -13,14 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
      # - name: Set up JDK 17
      #   uses: actions/setup-java@v2
      #   with:
      #     java-version: 17
-     
+
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v0.1.8
         with:
@@ -29,8 +26,9 @@ jobs:
           password : ${{ secrets.NHN_PASSWORD }}
           script: |
            cd /ndj/
-           git fetch --all
-           git pull origin main
+           
+      - name: Checkout code
+        uses: actions/checkout@v2
           
       - name: Build with Gradle
         run: ./gradlew build
