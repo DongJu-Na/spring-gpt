@@ -434,7 +434,13 @@
 	      	  <span class="chat-settings-spanMsg">광고 목적</span>  <input id="purposeInp" type="text">
 	      	  <span class="chat-settings-spanMsg">타게팅 성별</span>  <input id="sexInp" type="text">
 	      	  <span class="chat-settings-spanMsg">타게팅 나이</span>  <input id="ageInp" type="text">
-	      	  
+	      	 
+	      	  <span>광고주</span><select id="sampleAdvertiser" style="padding: 6px 10px;box-sizing: border-box;border: 1px solid #dadada;border-radius: 4px;">
+	      	  	<option value="">-- 선택 --</option>
+	      	  	<option value="1">다바걸</option>
+	      	  	<option value="2">자코모</option>
+	      	  	<option value="3">쿠팡</option>
+	      	  </select> 
 	      	  <button type="button" style="float: right;margin-top: 10px;" onclick="f_getTest()">문구 생성</button>
 	      </div>
 	      <div class="chat-logs">
@@ -684,6 +690,41 @@
 		        console.log('값 복사 중 오류 발생', err);
 		    })
 		}
+		
+		$("#sampleAdvertiser").on("change",function(e){
+			var selVal = e.target.value;
+			
+			switch(selVal){
+				case "1":
+					$("#companyNameInp").val("다바걸");
+					$("#categoryInp").val("20대 여성 쇼핑몰");
+					$("#purposeInp").val("노출");
+					$("#sexInp").val("여성");
+					$("#ageInp").val("20대");
+					break;
+				case "2":
+					$("#companyNameInp").val("자코모");
+					$("#categoryInp").val("37년 전통, 유명 셀럽들도 극찬하는 1등 소파 전문브랜드");
+					$("#purposeInp").val("신규 소파 홍보");
+					$("#sexInp").val("남성,여성");
+					$("#ageInp").val("무관");
+					break;
+				case "3":
+					$("#companyNameInp").val("쿠팡");
+					$("#categoryInp").val("전자상거래 웹사이트");
+					$("#purposeInp").val("브랜딩");
+					$("#sexInp").val("남성,여성");
+					$("#ageInp").val("무관");
+					break;
+				default:
+					$("#companyNameInp").val("");
+					$("#categoryInp").val("");
+					$("#purposeInp").val("");
+					$("#sexInp").val("");
+					$("#ageInp").val("");
+					break;
+			}
+		})
 		 
 		
 	</script>
