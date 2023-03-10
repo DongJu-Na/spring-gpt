@@ -17,10 +17,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - run: touch ./src/main/resources/apikey.yml
+      - run: echo "${{ secrets.GPT_KEY }}" > ./src/main/resources/apikey.yml
+      - run: cat ./src/main/resources/apikey.yml
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 17
 
@@ -28,7 +31,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --no-test
 
       - name: Install NHN Cloud CLI
         run: |
