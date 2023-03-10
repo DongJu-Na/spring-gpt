@@ -1,35 +1,39 @@
-name: Build and Deploy
+name: Deploy to NHN Cloud
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [ main ]
+
+env:
+  NHN_CLOUD_USERNAME: ${{ secrets.NHN_USERNAME }}
+  NHN_CLOUD_PASSWORD: ${{ secrets.NHN_PASSWORD }}
+  APP_NAME: spring-gpt
+  APP_TYPE: spring-boot
+  APP_PORT: 8080
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-     # - name: Set up JDK 17
-     #   uses: actions/setup-java@v2
-     #   with:
-     #     java-version: 17
-
-      - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@v0.1.8
-        with:
-          host: ${{ secrets.NHN_HOST }}
-          username  : ${{ secrets.NHN_USERNAME }}
-          password : ${{ secrets.NHN_PASSWORD }}
-          script: |
-           cd /ndj/
-           wget https://github.com/DongJu-Na/spring-gpt/archive/refs/heads/main.zip
-
       - name: Checkout code
         uses: actions/checkout@v2
-          
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Install NHN Cloud CLI
+        run: |
+          curl -sL https://cli.ncloud.com/install.sh | bash
+          export PATH=$PATH:/root/bin
+
+      - name: Deploy to NHN Cloud
+        run: |
+          ncloud configure set access_key_id $NHN_CLOUD_USERNAME
+          ncloud configure set secret_access_key $NHN_CLOUD_PASSWORD
+          ncloud app deploy $APP_NAME --type $APP_TYPE --port $APP_PORT --artifact build/libs/*.jar
