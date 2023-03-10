@@ -121,11 +121,22 @@ public class ApiController {
       						
       List<ChatMessage> tempList = new ArrayList<ChatMessage>();
       									tempList.add(cm);
-      							 
-      ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-              .messages(Collections.singletonList(cm))
-              .model("gpt-3.5-turbo")
-              .build();
+      									
+      ChatCompletionRequest chatCompletionRequest;
+      
+      if(text.contains("학습시킨 문장이 포함된 경우")) {
+        chatCompletionRequest = ChatCompletionRequest.builder()
+            .messages(Collections.singletonList(cm))
+            .model("YOUR_FINE_TUNED_MODEL_ID_HERE")
+            .build();
+      }else {
+      	chatCompletionRequest = ChatCompletionRequest.builder()
+            .messages(Collections.singletonList(cm))
+            .model("gpt-3.5-turbo")
+            .build();
+      }
+      
+      
       ChatCompletionResult a = service.createChatCompletion(chatCompletionRequest);// .getChoices().forEach(System.out::println)
       
       if(a != null) {
@@ -135,6 +146,8 @@ public class ApiController {
       
       return result;
   }
+  
+  
 	
 	
    /**
