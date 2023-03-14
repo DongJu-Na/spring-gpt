@@ -22,10 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openai.springGpt.dto.completion.CompletionRequest;
+import com.openai.springGpt.dto.completion.CompletionResult;
 import com.openai.springGpt.dto.completion.chat.ChatCompletionRequest;
 import com.openai.springGpt.dto.completion.chat.ChatCompletionResult;
 import com.openai.springGpt.dto.completion.chat.ChatMessage;
 import com.openai.springGpt.service.OpenAiService;
+import com.openai.springGpt.util.Util;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -112,6 +115,7 @@ public class ApiController {
   public Map<String,Object> sendQuestion(@RequestBody Map<String, Object> requestParam) {
   		String text = requestParam.get("text").toString();
   		Map<String,Object> result = new HashMap<String, Object>();
+  		int max_tokens = 0;
   		
       OpenAiService service = new OpenAiService(apiKey,Duration.ofMinutes(5));
       
@@ -122,27 +126,44 @@ public class ApiController {
       List<ChatMessage> tempList = new ArrayList<ChatMessage>();
       									tempList.add(cm);
       									
-      ChatCompletionRequest chatCompletionRequest;
+      ChatCompletionRequest chatCompletionRequest = null;
+      CompletionRequest completionRequest = null;
       
-      if(text.contains("학습시킨 문장이 포함된 경우")) {
-        chatCompletionRequest = ChatCompletionRequest.builder()
-            .messages(Collections.singletonList(cm))
-            .model("YOUR_FINE_TUNED_MODEL_ID_HERE")
-            .build();
+      Util.containsQuestion("광고비 충전은 어떻게 하나요?", "data/convertjson.jsonl");
+      
+      if(text.contains("@")) {
+      	max_tokens = Util.countTokens(text);
+      	log.debug("max_tokens > " + max_tokens);
+      	completionRequest = CompletionRequest.builder()
+      			.prompt("카드 매출전표는 어디에서 확인 가능한가요?")
+      			.model("davinci:ft-enliple:ndj-2023-03-14-05-40-53")
+      			.maxTokens(132)
+      			.temperature(0.0)
+						.build();
+      	
+      	CompletionResult cr = service.createCompletion(completionRequest);
+      			
+  			if(cr != null) {
+        	log.debug(cr.toString());
+        	result.put("msg", cr.getChoices().get(0).getText());
+        }
+      			
       }else {
       	chatCompletionRequest = ChatCompletionRequest.builder()
             .messages(Collections.singletonList(cm))
             .model("gpt-3.5-turbo")
             .build();
+      	
+        ChatCompletionResult ccr = service.createChatCompletion(chatCompletionRequest);// .getChoices().forEach(System.out::println)
+        
+        if(ccr != null) {
+        	log.debug(ccr.toString());
+        	result.put("msg",ccr.getChoices().get(0).getMessage().getContent());
+        }
       }
       
       
-      ChatCompletionResult a = service.createChatCompletion(chatCompletionRequest);// .getChoices().forEach(System.out::println)
-      
-      if(a != null) {
-      	log.debug(a.toString());
-      	result.put("msg",a.getChoices().get(0).getMessage().getContent());
-      }
+
       
       return result;
   }
