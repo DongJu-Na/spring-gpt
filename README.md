@@ -26,3 +26,5 @@ open Ai에서 APi Key 발급 이후 프로젝트 클래스패스에 apikey.yml �
 |logback|1.4.5|
 |tomcat-embed|10.1.5|
 
+## ISSUE
+1. fine-tune Model 학습 
