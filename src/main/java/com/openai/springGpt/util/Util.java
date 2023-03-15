@@ -46,7 +46,7 @@ public class Util {
 	 * @param filePath
 	 * @return
 	 */
-	@SuppressWarnings({ "unchecked", "resource" })
+	@SuppressWarnings({ "unchecked", "resource", "unused", "rawtypes" })
 	public static Boolean containsQuestion(String sentence , String filePath) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String,Object> tempMap = new HashMap<String, Object>();
