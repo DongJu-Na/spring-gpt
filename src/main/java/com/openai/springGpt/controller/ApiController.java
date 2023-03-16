@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -114,17 +113,30 @@ public class ApiController {
   @PostMapping("/question")
   public Map<String,Object> sendQuestion(@RequestBody Map<String, Object> requestParam) {
   		String text = requestParam.get("text").toString();
+  		
   		Map<String,Object> result = new HashMap<String, Object>();
   		int max_tokens = 0;
   		
       OpenAiService service = new OpenAiService(apiKey,Duration.ofMinutes(5));
       
-      ChatMessage cm = new ChatMessage();
-      						cm.setContent(text);
-      						cm.setRole("user");
-      						
       List<ChatMessage> tempList = new ArrayList<ChatMessage>();
-      									tempList.add(cm);
+      ChatMessage cm = new ChatMessage();
+      
+      if(requestParam.get("messageList") != null) {
+      	List<Map<String,Object>> messageList = (List<Map<String,Object>>) requestParam.get("messageList");
+      	
+      	for(int x=0; x < messageList.size(); x++) {
+      		cm = new ChatMessage();
+      		cm.setContent(messageList.get(x).get("content").toString());
+					cm.setRole(messageList.get(x).get("role").toString());
+      		tempList.add(cm);
+      	}
+      }else {
+				cm.setContent(text);
+				cm.setRole("user");
+				tempList.add(cm);
+      }
+
       									
       ChatCompletionRequest chatCompletionRequest = null;
       CompletionRequest completionRequest = null;
@@ -136,8 +148,8 @@ public class ApiController {
       	log.debug("max_tokens > " + max_tokens);
       	completionRequest = CompletionRequest.builder()
       			.prompt("카드 매출전표는 어디에서 확인 가능한가요?")
-      			.model("davinci:ft-enliple:ndj-2023-03-14-05-40-53")
-      			.maxTokens(132)
+      			.model("davinci:ft-enliple:1147-3-2023-03-15-10-52-07")
+      			.maxTokens(2000)
       			.temperature(0.0)
 						.build();
       	
@@ -145,12 +157,12 @@ public class ApiController {
       			
   			if(cr != null) {
         	log.debug(cr.toString());
-        	result.put("msg", cr.getChoices().get(0).getText());
+        	result = Util.class2Map(cr);
         }
       			
       }else {
       	chatCompletionRequest = ChatCompletionRequest.builder()
-            .messages(Collections.singletonList(cm))
+            .messages(tempList)
             .model("gpt-3.5-turbo")
             .build();
       	
@@ -158,7 +170,7 @@ public class ApiController {
         
         if(ccr != null) {
         	log.debug(ccr.toString());
-        	result.put("msg",ccr.getChoices().get(0).getMessage().getContent());
+        	result = Util.class2Map(ccr);
         }
       }
       

@@ -2,6 +2,7 @@ package com.openai.springGpt.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -79,6 +80,25 @@ public class Util {
 		return result;
 	}
 	
+	/**
+	 * Class to Map 변환 메소드
+	 * @param obj
+	 * @return
+	 */
+	public static Map<String,Object> class2Map(Object obj) {
+		Map<String,Object> result = new HashMap<String,Object>();
+		try {
+		  for (Field field : obj.getClass().getDeclaredFields()) {
+        field.setAccessible(true); // 필드에 접근 가능하도록 설정
+        result.put(field.getName(), field.get(obj)); // 필드 이름과 값을 Map에 추가
+		  }
+		} catch (Exception e) {
+			log.error(e.getClass() + "에러 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 	
 	
 	

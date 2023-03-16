@@ -466,12 +466,19 @@
     })
       var reqPenddingFlag = false;
    	  var INDEX = 0; 
+   	  var messageList = new Array();
    	  $("#chat-submit").click(function(e) {
     	    e.preventDefault();
     	    var msg = $("#chat-input").val(); 
     	    if(msg.trim() == ''){
     	      return false;
     	    }
+    	    
+			if(reqPenddingFlag){
+				alert("메세지를 응답 중 입니다. 잠시 후 이용해주세요.");
+				return false;
+			}
+			
     	    generate_message(msg, 'self');
     	    f_sendMsg(msg);
    	  })
@@ -524,11 +531,11 @@
 		    $(".chat-box").toggle('scale');
 		}
 		
-		function f_sendMsg(_msg){
-			if(reqPenddingFlag){
-				alert("메세지를 응답 중 입니다. 잠시 후 이용해주세요.");
-				return false;
-			}
+		function f_sendMsg(_msg){			
+			messageList.push({
+				"role" : "user",
+				"content" :_msg 
+			});
 			
 			 $.ajax({
 	    		    type : 'post',
@@ -539,19 +546,20 @@
 	    		    },
 	    		    dataType : 'json', 
 	    		    data : JSON.stringify({
-						"text" : _msg
+						"text" : _msg,
+						"messageList" : messageList
 					})
 					,beforeSend: function( xhr ) {
 						reqPenddingFlag = true;
 						generate_message("", 'user');
 					}
 	    		    ,success : function(data, textStatus, jqXHR ) {
+	    		    	console.log(data);
 	    		    	if(data){
-	    		    		$(`#cm-msg-${INDEX} > .cm-msg-text`).text(data["msg"]+"").removeClass("loading");
+	    		    		messageList.push(data["choices"][0]["message"]);
+	    		    		$(`#cm-msg-${INDEX} > .cm-msg-text`).text(data["choices"][0]["message"]["content"]+"").removeClass("loading");
 	    		    		$(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000)
 	    		    	}
-	    		        console.log(data);
-	    		        //  
 	    		    },complete : function(jqXHR , textStatus){
 	    		    	reqPenddingFlag = false;
 	    		    },error : function(request, status, error) {
@@ -614,6 +622,11 @@
 
 				위 정보를 이용해서 일반적으로 사용할 수 있는 자연스러운  광고 문구를 공백과 특수문자 포함해서 한글  글자수 체크 해서 작성해줘
 			`;
+				
+			messageList.push({
+				"role" : "user",
+				"content" : gt 
+			});
 			
 			 $.ajax({
 	    		    type : 'post',
@@ -631,12 +644,14 @@
 					}
 	    		    ,success : function(data, textStatus, jqXHR ) {
 	    		    	if(data){
-	    		    		console.log(data);
-	    		    		var _msg = "광고 문구가 생성 되었습니다. 클립보드에 복사하시겠습니까? \n\n\n========================================="
-		    								 + data["msg"] + 
-	    		    					"\n\n\n========================================";
+	    		    		// console.debug(data)
+	    		    		// 백틱 사용 시 문구가 잘릴 수 있음
+	    		    		messageList.push(data["choices"][0]["message"]);
+	    		    		var _msg = "광고 문구가 생성 되었습니다. 클립보드에 복사하시겠습니까? \n\n=========================================\n"
+		    								 + data["choices"][0]["message"]["content"]+"" + 
+	    		    					"\n\n========================================";
 	    		    		if(confirm(_msg)){
-	    		    			console.log("네");
+	    		    			console.log("네"); 
 	    		    			f_copy(data["msg"]);
 	    		    		}else{
 	    		    			console.log("아니요");
