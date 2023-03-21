@@ -141,15 +141,15 @@ public class ApiController {
       ChatCompletionRequest chatCompletionRequest = null;
       CompletionRequest completionRequest = null;
       
-      Util.containsQuestion("광고비 충전은 어떻게 하나요?", "data/convertjson.jsonl");
+      // Util.containsQuestion("광고비 충전은 어떻게 하나요?", "data/convertjson.jsonl");
       
-      if(text.contains("@")) {
+      if(false) {// text.contains("@")
       	max_tokens = Util.countTokens(text);
       	log.debug("max_tokens > " + max_tokens);
       	completionRequest = CompletionRequest.builder()
       			.prompt("카드 매출전표는 어디에서 확인 가능한가요?")
       			.model("davinci:ft-enliple:1147-3-2023-03-15-10-52-07")
-      			.maxTokens(2000)
+      			.maxTokens(1800)
       			.temperature(0.0)
 						.build();
       	
