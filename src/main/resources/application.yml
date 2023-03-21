@@ -11,6 +11,10 @@ logging:
     level:
       root: info
       com.example: DEBUG
+    file:
+      name: /home/users/djna/jar/log/spring-gpt.log.%d{yyyy-MM-dd}
+      max-size: 10MB
+      max-history: 10
 ---
 spring:
   config:
