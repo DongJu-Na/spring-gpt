@@ -62,9 +62,13 @@ public class ApiControllerTest {
 	@Test
 	public void getRecommendedAdText() throws Exception {
 		log.debug("getRecommendedAdText");
-		
+			Map<String, Object> param = new HashMap<String, Object>();
+													param.put("maker","나이키");
+													param.put("age","20대");
+													param.put("sex","남성");
+			
 			mvc.perform(MockMvcRequestBuilders.post("/api/getRecommendedAdText")
-				.param("query", "test query")
+				.content(objectMapper.writeValueAsString(param))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk());
 			
