@@ -102,7 +102,7 @@ public class ApiController {
 		String json = mapper.writeValueAsString(apiParam);
 					
 		
-		String gptResult = sendApi("https://api.openai.com/v1/chat/completions", "POST", Header, json);
+		String gptResult = sendApi("https://api.openai.com/v1/chat/completions", "POST", Header, json,300000);
 		if(gptResult != null) {
 			result = mapper.readValue(gptResult,Map.class);
 		}
@@ -192,7 +192,7 @@ public class ApiController {
     * @throws Exception
     */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-   	public static String sendApi(String sendUrl, String method ,Map<String, Object> Header ,String jsonValue) throws Exception  {
+   	public static String sendApi(String sendUrl, String method ,Map<String, Object> Header ,String jsonValue , int ms) throws Exception  {
        String inputLine = null;
        StringBuffer outResult = new StringBuffer();
        BufferedReader in = null;
@@ -217,8 +217,8 @@ public class ApiController {
                conn.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
            }
           
-           conn.setConnectTimeout(300000);
-           conn.setReadTimeout(300000);
+           conn.setConnectTimeout(ms);
+           conn.setReadTimeout(ms);
            
            if(method.equals("POST")) {
                OutputStream os = conn.getOutputStream();
