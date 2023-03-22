@@ -71,7 +71,7 @@ public class ApiController {
 		String json = mapper.writeValueAsString(apiParam);
 					
 		
-		String gptResult = sendApi("https://api.openai.com/v1/chat/completions", "POST", Header, json);
+		String gptResult = sendApi("https://api.openai.com/v1/chat/completions", "POST", Header, json,300000);
 		if(gptResult != null) {
 			result = mapper.readValue(gptResult,Map.class);
 		}
