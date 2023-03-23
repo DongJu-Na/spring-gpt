@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>TEST</title>
+</head>
+<body>
+<div id="wrap">
+purescript::<textarea style="width: 100%" id="temp">TEST</textarea>
+<br/>
+<br/>
+
+userAgent :: <input id="temp1" type="text" style="width: 100%"/><br/>
+ipAddress :: <input id="temp2" type="text" style="width: 100%"/><br/>
+screenWidth :: <input id="temp3" type="text" style="width: 100%"/><br/>
+screenHeight :: <input id="temp4" type="text" style="width: 100%"/><br/>
+canvas :: <input id="temp5" type="text" style="width: 100%"/><br/>
+wifi check :: <input id="temp6" type="text" style="width: 100%"/><br/>
+canvas webgl :: <input id="temp7" type="text" style="width: 100%"/><br/><br/><br/>
+
+<div id="canvasArea"></div>
+<img id="tempImg" style="display: none;" src="/img/pic_the_scream.jpg"></img>
+
+
+
+
+<script type="text/javascript" src="https://jsonip.com"></script>	
+<script>    
+function generateFingerprint() {
+	  // User Agent 정보 가져오기
+	  const userAgent = navigator.userAgent;
+	  
+	  // IP 주소 가져오기
+	  fetch('https://jsonip.com/?format=json')
+	    .then(response => response.json())
+	    .then(data => {
+	      const ipAddress = data.ip;
+	      
+	      // 해상도 정보 가져오기
+	      const screenWidth = screen.width;
+	      const screenHeight = screen.height;
+	      
+	      // Canvas 태그 정보 가져오기
+	      const canvas = document.createElement('canvas');
+	      		canvas.style.width = "300px";
+	      		canvas.style.height = "200px";
+	      		
+	      const ctx = canvas.getContext('2d');
+	      const text = 'Canvas Fingerprint Test';
+		        ctx.textBaseline = "top";
+		        ctx.font = "14px 'Arial'";
+		        ctx.textBaseline = "alphabetic";
+		        ctx.fillStyle = "#f60";
+		        ctx.fillRect(125,1,62,20);
+		        ctx.fillStyle = "#069";
+		        ctx.fillText(text, 2, 15);
+		        ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+		        ctx.fillText(text, 4, 17);
+		        
+		        ctx.fillStyle = "rgb(255,0,255)";
+		        ctx.beginPath();
+		        ctx.rect(20, 20, 150, 100);
+		        ctx.fill();
+		        ctx.stroke();
+		        ctx.closePath();
+		        ctx.beginPath();
+		        ctx.fillStyle = "rgb(0,255,255)";
+		        ctx.arc(50, 50, 50, 0, Math.PI * 2, true);
+		        ctx.fill();
+		        ctx.stroke();   
+		        ctx.closePath();
+
+		        txt = 'abz190#$%^@£éú';
+		        ctx.textBaseline = "top";
+		        ctx.font = '17px "Arial 17"';
+		        ctx.textBaseline = "alphabetic";
+		        ctx.fillStyle = "rgb(255,5,5)";
+		        ctx.rotate(.03);
+		        ctx.fillText(txt, 4, 17);
+		        ctx.fillStyle = "rgb(155,255,5)";
+		        ctx.shadowBlur=8;
+		        ctx.shadowColor="red";
+		        ctx.fillRect(20,12,100,5);
+		        
+		        var img = document.getElementById("tempImg");
+		        ctx.drawImage(img, 10, 10 , 300 , 200);
+	      
+	      // 핑거프린트 조합하기
+	      const fingerprint = `${userAgent}_${ipAddress}_${screenWidth}x${screenHeight}_${canvas.toDataURL().replace("data:image/png;base64,","")}_${autoplay()}`;
+	      
+	      // 핑거프린트 출력하기
+	      console.log(fingerprint);
+	      //document.querySelector("#temp").innerHtml
+	      document.querySelector("#temp").innerText = fingerprint;
+	      document.querySelector("#temp1").value = userAgent;
+	      document.querySelector("#temp2").value = ipAddress;
+	      document.querySelector("#temp3").value = screenWidth;
+	      document.querySelector("#temp4").value = screenHeight;
+	      document.querySelector("#temp5").value = canvas.toDataURL().replace("data:image/png;base64,","");
+	      document.querySelector("#temp6").value = autoplay();
+	      
+	      let tt = "";
+	      // WebGL fingerprint
+	      try {
+	    	tt += canvas.toDataURL().replace("data:image/png;base64,","");
+	        var canvas2 = document.createElement('canvas');
+	        var gl = canvas2.getContext('webgl') || canvas2.getContext('experimental-webgl');
+	        var extensionDebugRendererInfo = gl.getExtension('WEBGL_debug_renderer_info');
+	        var renderer = gl.getParameter(extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL);
+	        var vendor = gl.getParameter(extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL);
+	        tt += vendor + renderer;
+	      } catch(e) {
+	    	tt += 'NA';
+	      }
+	      
+	      document.querySelector("#temp7").value = tt;
+		  document.querySelector("#canvasArea").appendChild(canvas);
+	      
+	    })
+	    .catch(error => {
+	      console.log(error);
+	    });
+
+	}
+
+	
+	generateFingerprint();
+		  
+  function isWIFI() {
+    	  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection || 0;
+    	  if(!conn){return -1;}
+    	  if(typeof(conn.type)!="undefined"){
+    	    switch(conn.type){
+    	      case "wifi":
+    	        return 3;
+    	      case "cellular":
+    	        return 0;
+    	      default:
+    	        return -1;
+    	    }
+    	  }else if(typeof(conn.saveData)!="undefined"){
+    	    if(conn.saveData){
+    	      return 1;
+    	    }else{
+    	      return 2;
+    	    }
+    	  }else{
+    	    return -1;
+    	  }
+   	}
+	  
+ function autoplay(){
+	 /*
+	   -1: 확인할 수 없는 브라우저
+		0: cellular (모바일 데이터 환경 : 3g, 4g 등)
+		1: saveData=true (cellular or wifi or PC) 접속환경이 정확하지는 않으나 데이터 사용제한
+		2: saveData=false (cellular or wifi or PC) 접속환경이 정확하지는 않으나 데이터 제한 안함
+		3: wifi (와이파이)
+	*/
+	
+	switch(isWIFI()){
+      case -1:
+    	  return "확인할 수 없는 브라우저";
+      case 0:
+    	  return "모바일데이터";
+      case 1:
+          return "데이터 사용제한 환경";
+      case 2:
+    	  return "데이터 무제한 환경";
+      case 3:
+          return "wifi";
+      default:
+          return "알수없음";
+  	}
+  }
+ 
+ function onDeviceReady() {
+     console.log("We got device ready");
+     window.plugins.imei.get(function(imei) {
+         console.log(imei);
+     }, function() {
+         console.log("fail");
+     });
+ }
+		
+</script>
+</div>
+</body>
+</html>

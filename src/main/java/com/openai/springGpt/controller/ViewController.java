@@ -27,4 +27,10 @@ public class ViewController {
 		return "demo";
 	}
 	
+	@GetMapping(value="/testPage")
+	public String testPage() {
+		log.debug("testPage Page access");
+		return "testPage";
+	}
+	
 }
