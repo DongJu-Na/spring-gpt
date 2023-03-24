@@ -17,7 +17,8 @@ screenWidth :: <input id="temp3" type="text" style="width: 100%"/><br/>
 screenHeight :: <input id="temp4" type="text" style="width: 100%"/><br/>
 canvas :: <input id="temp5" type="text" style="width: 100%"/><br/>
 wifi check :: <input id="temp6" type="text" style="width: 100%"/><br/>
-canvas webgl :: <input id="temp7" type="text" style="width: 100%"/><br/><br/><br/>
+canvas webgl :: <input id="temp7" type="text" style="width: 100%"/><br/>
+<span style="color : red;">key</span> :: <input id="temp8" type="text" style="width: 100%"/>
 
 <div id="canvasArea"></div>
 <img id="tempImg" style="display: none;" src="/img/pic_the_scream.jpg"></img>
@@ -116,16 +117,34 @@ function generateFingerprint() {
 	      
 	      document.querySelector("#temp7").value = tt;
 		  document.querySelector("#canvasArea").appendChild(canvas);
-	      
+		  
+		  fetch("api/encryption", {
+			  method: "POST",
+			  headers: {
+			    "Content-Type": "application/json",
+			  },
+			  body: JSON.stringify({
+				  testKey: tt,
+			  }),
+			})
+			  .then((response) => response.json())
+			  .then((data) => {
+				  console.log(data);
+				  document.querySelector("#temp8").value = data["key"];
+			  });
+		  
 	    })
 	    .catch(error => {
 	      console.log(error);
 	    });
 
 	}
-
 	
 	generateFingerprint();
+	
+	  
+
+	
 		  
   function isWIFI() {
     	  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection || 0;
@@ -183,6 +202,8 @@ function generateFingerprint() {
          console.log("fail");
      });
  }
+ 
+
 		
 </script>
 </div>

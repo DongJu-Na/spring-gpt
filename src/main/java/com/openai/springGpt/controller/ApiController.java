@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -251,4 +254,22 @@ public class ApiController {
          
          return outResult.toString();
    }
+	
+	
+	@PostMapping("/encryption")
+	public Map<String,Object> getEncryptionTxt(@RequestBody Map<String, Object> requestParam) throws Exception {
+		Map<String,Object> result = new HashMap<String, Object>();
+		String originalString = requestParam.get("testKey").toString();
+		
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		byte[] hashbytes = digest.digest(originalString.getBytes(StandardCharsets.UTF_8));
+		String sha3Hex = Util.bytesToHex(hashbytes);
+		log.debug("생성 키 > " + sha3Hex);
+		result.put("key",sha3Hex);
+		
+		return result;
+	} 
+	
+	
+	
 }
