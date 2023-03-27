@@ -13,15 +13,17 @@ purescript::<textarea style="width: 100%" id="temp">TEST</textarea>
 
 userAgent :: <input id="temp1" type="text" style="width: 100%"/><br/>
 ipAddress :: <input id="temp2" type="text" style="width: 100%"/><br/>
-screenWidth :: <input id="temp3" type="text" style="width: 100%"/><br/>
-screenHeight :: <input id="temp4" type="text" style="width: 100%"/><br/>
+<span style="color : blue;"> screenWidth :: </span><input id="temp3" type="text" style="width: 100%"/><br/>
+<span style="color : blue;"> screenHeight :: </span><input id="temp4" type="text" style="width: 100%"/><br/>
 canvas :: <input id="temp5" type="text" style="width: 100%"/><br/>
 wifi check :: <input id="temp6" type="text" style="width: 100%"/><br/>
-canvas webgl :: <input id="temp7" type="text" style="width: 100%"/><br/>
-<span style="color : red;">key</span> :: <input id="temp8" type="text" style="width: 100%"/>
+<span style="color : blue;"> canvas webgl ::</span> <input id="temp7" type="text" style="width: 100%"/><br/>
+<span style="color : blue;"> devicePixelRatio ::</span> <input id="temp8" type="text" style="width: 100%"/><br/>
+<span style="color : blue;"> AudioContext ::</span> <input id="temp9" type="text" style="width: 100%"/><br/>
+<span style="color : red;">key</span> :: <input id="tempResult" type="text" style="width: 100%"/>
 
 <div id="canvasArea"></div>
-<img id="tempImg" style="display: none;" src="/img/pic_the_scream.jpg"></img>
+<img id="tempImg" style="display: none;" src="/img/sample.PNG"></img>
 
 
 
@@ -48,7 +50,7 @@ function generateFingerprint() {
 	      		canvas.style.height = "200px";
 	      		
 	      const ctx = canvas.getContext('2d');
-	      const text = 'Canvas Fingerprint Test';
+	      const text = 'Fingerprint😈';
 		        ctx.textBaseline = "top";
 		        ctx.font = "14px 'Arial'";
 		        ctx.textBaseline = "alphabetic";
@@ -116,7 +118,11 @@ function generateFingerprint() {
 	      }
 	      
 	      document.querySelector("#temp7").value = tt;
+	      document.querySelector("#temp8").value = window.devicePixelRatio + "";
+	      document.querySelector("#temp9").value = getAudioConText();
 		  document.querySelector("#canvasArea").appendChild(canvas);
+		  
+		  var resultString =  ("" + screenWidth) + (screenHeight+"")  + tt + document.querySelector("#temp8").value + document.querySelector("#temp9").value;   
 		  
 		  fetch("api/encryption", {
 			  method: "POST",
@@ -124,13 +130,13 @@ function generateFingerprint() {
 			    "Content-Type": "application/json",
 			  },
 			  body: JSON.stringify({
-				  testKey: tt,
+				  testKey: resultString,
 			  }),
 			})
 			  .then((response) => response.json())
 			  .then((data) => {
 				  console.log(data);
-				  document.querySelector("#temp8").value = data["key"];
+				  document.querySelector("#tempResult").value = data["key"];
 			  });
 		  
 	    })
@@ -202,6 +208,38 @@ function generateFingerprint() {
          console.log("fail");
      });
  }
+ 
+ function getAudioConText(){
+	 var audioContext = new AudioContext();
+
+	// 오디오 소스 생성
+	var oscillator = audioContext.createOscillator();
+	oscillator.type = 'triangle';
+	oscillator.frequency.value = 2000;
+
+	// 볼륨 노드 생성
+	var gainNode = audioContext.createGain();
+	gainNode.gain.value = 0;
+
+	// 오디오 소스와 볼륨 노드 연결
+	oscillator.connect(gainNode);
+
+	// 오디오 소스 재생
+	oscillator.start();
+
+	// 오디오 데이터 수집
+	var dataArray = new Uint8Array(32);
+	var analyser = audioContext.createAnalyser();
+	analyser.fftSize = 32;
+	analyser.getByteTimeDomainData(dataArray);
+	var fingerprint = '';
+	for (var i = 0; i < dataArray.length; i++) {
+	  fingerprint += dataArray[i].toString();
+	}
+
+	return fingerprint; 
+ }
+ 
  
 
 		
