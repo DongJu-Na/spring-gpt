@@ -33,4 +33,10 @@ public class ViewController {
 		return "testPage";
 	}
 	
+	@GetMapping(value="/checkbrowser")
+	public String checkbrowser() {
+		log.debug("checkbrowser Page access");
+		return "checkbrowser";
+	}
+	
 }

@@ -20,14 +20,14 @@ wifi check :: <input id="temp6" type="text" style="width: 100%"/><br/>
 <span style="color : blue;"> canvas webgl ::</span> <input id="temp7" type="text" style="width: 100%"/><br/>
 <span style="color : blue;"> devicePixelRatio ::</span> <input id="temp8" type="text" style="width: 100%"/><br/>
 <span style="color : blue;"> AudioContext ::</span> <input id="temp9" type="text" style="width: 100%"/><br/>
+<span style="color : blue;"> Ram ::</span> <input id="temp10" type="text" style="width: 100%"/><br/>
+<span style="color : blue;"> core ::</span> <input id="temp10" type="text" style="width: 100%"/><br/>
 <span style="color : red;">key</span> :: <input id="tempResult" type="text" style="width: 100%"/>
 
 <div id="canvasArea"></div>
 <img id="tempImg" style="display: none;" src="/img/sample.PNG"></img>
 
-
-
-
+<script type="text/javascript" src="/js/fingerprint/ff.js"></script>
 <script type="text/javascript" src="https://jsonip.com"></script>	
 <script>    
 function generateFingerprint() {
@@ -120,7 +120,12 @@ function generateFingerprint() {
 	      document.querySelector("#temp7").value = tt;
 	      document.querySelector("#temp8").value = window.devicePixelRatio + "";
 	      document.querySelector("#temp9").value = getAudioConText();
+	      document.querySelector("#temp10").value = navigator.deviceMemory;
+	      
+	      
 		  document.querySelector("#canvasArea").appendChild(canvas);
+		  
+
 		  
 		  var resultString =  ("" + screenWidth) + (screenHeight+"")  + tt + document.querySelector("#temp8").value + document.querySelector("#temp9").value;   
 		  
