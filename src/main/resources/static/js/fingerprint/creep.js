@@ -2168,6 +2168,8 @@
             };
         }
         const getUserAgentData = async (navigator) => {
+			// ndj 
+			// useragent 
 			return ;
             if (!('userAgentData' in navigator)) {
                 return;
