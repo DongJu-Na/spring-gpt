@@ -2168,6 +2168,7 @@
             };
         }
         const getUserAgentData = async (navigator) => {
+			return ;
             if (!('userAgentData' in navigator)) {
                 return;
             }
@@ -2393,7 +2394,7 @@
                     return resolve(null);
                 });
             });
-            const scriptSource = './js/fingerprint/ff.js';
+            const scriptSource = './js/fingerprint/creep.js';
             WORKER_NAME = 'ServiceWorkerGlobalScope';
             WORKER_TYPE = 'service'; // loads fast but is not available in frames
             let workerScope = await getServiceWorker({ scriptSource }).catch((error) => {
@@ -8259,7 +8260,7 @@
         let url = null;
         try {
             // @ts-expect-error if unsupported
-            url = document?.currentScript?.src || (document.currentScript && document.currentScript.src || new URL('/js/fingerprint/ff.js', document.baseURI).href);
+            url = document?.currentScript?.src || (document.currentScript && document.currentScript.src || new URL('/js/fingerprint/creep.js', document.baseURI).href);
         }
         catch (err) { }
         if (!url)
@@ -10324,6 +10325,8 @@
         console.log('diff check at https://www.diffchecker.com/diff\n\n', JSON.stringify(creep, null, '\t'));
         console.groupEnd();
         // get/post request
+        console.log("fp creep >>>",fp);
+        console.log("test creep >>>",creep);
         const webapp = 'https://creepjs-api.web.app/fp';
         const [fpHash, creepHash] = await Promise.all([hashify(fp), hashify(creep)])
             .catch((error) => {
