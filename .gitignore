@@ -39,3 +39,6 @@ out/
 ### KEY ###
 apikey.yml
 src/main/resources/apikey.yml
+
+### log ###
+*.log
