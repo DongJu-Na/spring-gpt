@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>IMAGE CREATE DEMO</title>
+<link type="text/css" href="https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.css" rel="stylesheet"/>
+<link th:href="@{/css/tui-image-editor.css}" rel="stylesheet" />
+</head>
+<body>
+	<div style="margin-bottom: 5%">
+		<button onclick="location.replace('/demo')">데모페이지</button>
+	</div>
+	
+	
+	<span style="margin-top : 5%">
+		<input style="width: 95%" type="text" id="txtInp" placeholder="문구를 입력해주세요."/>
+		<button id="generateBtn">생성</button>
+	</span>
+	
+	 <div id="tui-image-editor-container"></div>
+	
+</body>
+<script  src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.js"></script>
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
+<script type="text/javascript" src="https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+<script src="/js/tui-image-editor.js"></script>
+<script src="/js/theme/white-theme.js"></script>
+<script>
+var imageEditor;
+	$(function() {
+		$("#generateBtn").on({
+			click : function(e){
+				console.debug("click",e);
+				createImg();
+			}
+		});
+		
+		$("#txtInp").on({
+			keydown : function(e){
+				if(e.target.key === "Enter"){
+					console.debug("keydown",e);
+					createImg();
+				}
+			}
+		});
+		
+		// Create image editor
+		imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
+        includeUI: {
+	          loadImage: {
+	            path: 'https://source.unsplash.com/random/800x600',
+	            name: 'SampleImage',
+	          },
+	          theme: whiteTheme,
+	          initMenu: 'filter',
+	          menuBarPosition: 'bottom',
+	          uiSize : {
+		        	width : "1887px",
+		        	height : "1166.340px"
+		        }
+	        },
+	        cssMaxWidth: 1920,
+	        cssMaxHeight: 1024,
+	        usageStatistics: false,
+	      });
+	      window.onresize = function () {
+	        imageEditor.ui.resizeEditor();
+	      };
+		
+	      console.log(imageEditor);
+		
+	})
+
+
+	function createImg(){
+		
+		if($("#txtInp").val().trim() === ""){
+			alert("문구가 입력되지 않았습니다.");
+			return false;
+		}
+		
+		
+		 $.ajax({
+ 		    type : 'post',
+ 		    url : '/api/createImage',
+ 		    async :true,
+ 		    headers : { 
+ 		      "Content-Type" : "application/json",
+ 		    },
+ 		    dataType : 'json', 
+ 		    data : JSON.stringify({
+					"text" : $("#txtInp").val()
+				})
+			,beforeSend: function( xhr ) {
+				imageEditor.loadImageFromURL('https://www.freeiconspng.com/uploads/no-image-icon-15.png', 'SampleImage').then(result => {
+				     console.log('old : ' + result.oldWidth + ', ' + result.oldHeight);
+				     console.log('new : ' + result.newWidth + ', ' + result.newHeight);
+				});
+			}
+ 		    ,success : function(data, textStatus, jqXHR ) {
+ 		    	console.log(data);
+ 		    	if(data){
+ 		    		//$("#imgPrv").prop("src",data["data"][0].url + "");
+					
+ 		    		imageEditor.loadImageFromURL(data["data"][0].url , 'SampleImage').then(result => {
+				     console.log('old : ' + result.oldWidth + ', ' + result.oldHeight);
+				     console.log('new : ' + result.newWidth + ', ' + result.newHeight);
+					});
+ 		    		
+ 		    	}
+ 		    },complete : function(jqXHR , textStatus){
+				alert("이미지가 생성 되었습니다."); 		    	
+ 		    },error : function(request, status, error) {
+ 		        
+ 		    }
+ 		})
+ 		
+		return true;
+	}
+</script>
+</html>

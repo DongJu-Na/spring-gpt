@@ -27,6 +27,12 @@ public class ViewController {
 		return "demo";
 	}
 	
+	@GetMapping(value="/imageCreateDemo")
+	public String imageCreateDemo() {
+		log.debug("imageCreateDemo Page access");
+		return "imageCreateDemo";
+	}
+	
 	@GetMapping(value="/testPage")
 	public String testPage() {
 		log.debug("testPage Page access");

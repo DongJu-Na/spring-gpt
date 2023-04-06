@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>DEMO</title>
 <link th:href="@{/css/reset.css}" rel="stylesheet" />
-<link th:href="@{/css/main.css}" rel="stylesheet" />
-<link th:href="@{/css/chat.css}" rel="stylesheet" />
+<link th:href="@{/css/main.css}"  rel="stylesheet" />
+<link th:href="@{/css/chat.css}"  rel="stylesheet" />
 </head>
 <body>
 <div id="wrap">
@@ -325,6 +325,7 @@
 										<h3 style="display: inline-block;">
 											카피 소재 등록
 											<div class="btn" style="float: right;">
+												<button type="button" class="btnNewCopy" onclick="location.href='/imageCreateDemo'" >AI 배너 이미지 생성</button>
 												<button type="button" class="btnNewCopy" onclick="f_popOpen();" >AI 카피 추천</button>
 												<a href="#"><button type="button" class="btnNewCopy">+ 새로운 카피 등록 하기</button></a>
 												<a href="javascript:void(0);"><button type="button" class="btnSaveCopy" style="display: none;">저장</button></a>

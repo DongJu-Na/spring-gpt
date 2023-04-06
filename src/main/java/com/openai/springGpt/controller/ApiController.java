@@ -29,6 +29,8 @@ import com.openai.springGpt.dto.completion.CompletionResult;
 import com.openai.springGpt.dto.completion.chat.ChatCompletionRequest;
 import com.openai.springGpt.dto.completion.chat.ChatCompletionResult;
 import com.openai.springGpt.dto.completion.chat.ChatMessage;
+import com.openai.springGpt.dto.image.CreateImageRequest;
+import com.openai.springGpt.dto.image.ImageResult;
 import com.openai.springGpt.service.OpenAiService;
 import com.openai.springGpt.util.Util;
 
@@ -182,6 +184,31 @@ public class ApiController {
       
       return result;
   }
+  
+	@SuppressWarnings("unchecked")
+	@PostMapping("/createImage")
+	public Map<String,Object> createImage(@RequestBody Map<String, Object> requestParam) throws Exception {
+		String text = requestParam.get("text").toString();
+		Map<String,Object> result = new HashMap<String, Object>();
+		
+		OpenAiService service = new OpenAiService(apiKey,Duration.ofMinutes(5));
+		CreateImageRequest createImageRequest = null;
+		
+		createImageRequest = CreateImageRequest.builder()
+												.prompt(text) // prompt
+												.n(1) // 갯수 
+												.responseFormat("url") // url or b64_json
+												.size("1024x1024") // "256x256", "512x512", or "1024x1024"
+												.build();
+		
+		ImageResult ir =  service.createImage(createImageRequest);
+		
+		if(ir != null) {
+			result = Util.class2Map(ir);
+		}
+		
+		return result;
+	} 
   
   
 	
