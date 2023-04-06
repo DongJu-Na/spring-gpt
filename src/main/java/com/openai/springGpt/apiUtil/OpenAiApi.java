@@ -25,91 +25,102 @@ import com.openai.springGpt.dto.response.OpenAiResponse;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.*;
 
 public interface OpenAiApi {
 
-    @GET("v1/models")
-    Single<OpenAiResponse<Model>> listModels();
+	@GET("v1/models")
+  Single<OpenAiResponse<Model>> listModels();
 
-    @GET("/v1/models/{model_id}")
-    Single<Model> getModel(@Path("model_id") String modelId);
+  @GET("/v1/models/{model_id}")
+  Single<Model> getModel(@Path("model_id") String modelId);
 
-    @POST("/v1/completions")
-    Single<CompletionResult> createCompletion(@Body CompletionRequest request);
-    
-    @POST("/v1/chat/completions")
-    Single<ChatCompletionResult> createChatCompletion(@Body ChatCompletionRequest request);
+  @POST("/v1/completions")
+  Single<CompletionResult> createCompletion(@Body CompletionRequest request);
 
-    @Deprecated
-    @POST("/v1/engines/{engine_id}/completions")
-    Single<CompletionResult> createCompletion(@Path("engine_id") String engineId, @Body CompletionRequest request);
+  @Streaming
+  @POST("/v1/completions")
+  Call<ResponseBody> createCompletionStream(@Body CompletionRequest request);
+  
+  @POST("/v1/chat/completions")
+  Single<ChatCompletionResult> createChatCompletion(@Body ChatCompletionRequest request);
 
-    @POST("/v1/edits")
-    Single<EditResult> createEdit(@Body EditRequest request);
+  @Streaming
+  @POST("/v1/chat/completions")
+  Call<ResponseBody> createChatCompletionStream(@Body ChatCompletionRequest request);
 
-    @Deprecated
-    @POST("/v1/engines/{engine_id}/edits")
-    Single<EditResult> createEdit(@Path("engine_id") String engineId, @Body EditRequest request);
+  @Deprecated
+  @POST("/v1/engines/{engine_id}/completions")
+  Single<CompletionResult> createCompletion(@Path("engine_id") String engineId, @Body CompletionRequest request);
 
-    @POST("/v1/embeddings")
-    Single<EmbeddingResult> createEmbeddings(@Body EmbeddingRequest request);
+  @POST("/v1/edits")
+  Single<EditResult> createEdit(@Body EditRequest request);
 
-    @Deprecated
-    @POST("/v1/engines/{engine_id}/embeddings")
-    Single<EmbeddingResult> createEmbeddings(@Path("engine_id") String engineId, @Body EmbeddingRequest request);
+  @Deprecated
+  @POST("/v1/engines/{engine_id}/edits")
+  Single<EditResult> createEdit(@Path("engine_id") String engineId, @Body EditRequest request);
 
-    @GET("/v1/files")
-    Single<OpenAiResponse<File>> listFiles();
+  @POST("/v1/embeddings")
+  Single<EmbeddingResult> createEmbeddings(@Body EmbeddingRequest request);
 
-    @Multipart
-    @POST("/v1/files")
-    Single<File> uploadFile(@Part("purpose") RequestBody purpose, @Part MultipartBody.Part file);
+  @Deprecated
+  @POST("/v1/engines/{engine_id}/embeddings")
+  Single<EmbeddingResult> createEmbeddings(@Path("engine_id") String engineId, @Body EmbeddingRequest request);
 
-    @DELETE("/v1/files/{file_id}")
-    Single<DeleteResult> deleteFile(@Path("file_id") String fileId);
+  @GET("/v1/files")
+  Single<OpenAiResponse<File>> listFiles();
 
-    @GET("/v1/files/{file_id}")
-    Single<File> retrieveFile(@Path("file_id") String fileId);
+  @Multipart
+  @POST("/v1/files")
+  Single<File> uploadFile(@Part("purpose") RequestBody purpose, @Part MultipartBody.Part file);
 
-    @POST("/v1/fine-tunes")
-    Single<FineTuneResult> createFineTune(@Body FineTuneRequest request);
+  @DELETE("/v1/files/{file_id}")
+  Single<DeleteResult> deleteFile(@Path("file_id") String fileId);
 
-    @POST("/v1/completions")
-    Single<CompletionResult> createFineTuneCompletion(@Body CompletionRequest request);
+  @GET("/v1/files/{file_id}")
+  Single<File> retrieveFile(@Path("file_id") String fileId);
 
-    @GET("/v1/fine-tunes")
-    Single<OpenAiResponse<FineTuneResult>> listFineTunes();
+  @POST("/v1/fine-tunes")
+  Single<FineTuneResult> createFineTune(@Body FineTuneRequest request);
 
-    @GET("/v1/fine-tunes/{fine_tune_id}")
-    Single<FineTuneResult> retrieveFineTune(@Path("fine_tune_id") String fineTuneId);
+  @POST("/v1/completions")
+  Single<CompletionResult> createFineTuneCompletion(@Body CompletionRequest request);
 
-    @POST("/v1/fine-tunes/{fine_tune_id}/cancel")
-    Single<FineTuneResult> cancelFineTune(@Path("fine_tune_id") String fineTuneId);
+  @GET("/v1/fine-tunes")
+  Single<OpenAiResponse<FineTuneResult>> listFineTunes();
 
-    @GET("/v1/fine-tunes/{fine_tune_id}/events")
-    Single<OpenAiResponse<FineTuneEvent>> listFineTuneEvents(@Path("fine_tune_id") String fineTuneId);
+  @GET("/v1/fine-tunes/{fine_tune_id}")
+  Single<FineTuneResult> retrieveFineTune(@Path("fine_tune_id") String fineTuneId);
 
-    @DELETE("/v1/models/{fine_tune_id}")
-    Single<DeleteResult> deleteFineTune(@Path("fine_tune_id") String fineTuneId);
+  @POST("/v1/fine-tunes/{fine_tune_id}/cancel")
+  Single<FineTuneResult> cancelFineTune(@Path("fine_tune_id") String fineTuneId);
 
-    @POST("/v1/images/generations")
-    Single<ImageResult> createImage(@Body CreateImageRequest request);
+  @GET("/v1/fine-tunes/{fine_tune_id}/events")
+  Single<OpenAiResponse<FineTuneEvent>> listFineTuneEvents(@Path("fine_tune_id") String fineTuneId);
 
-    @POST("/v1/images/edits")
-    Single<ImageResult> createImageEdit(@Body RequestBody requestBody);
+  @DELETE("/v1/models/{fine_tune_id}")
+  Single<DeleteResult> deleteFineTune(@Path("fine_tune_id") String fineTuneId);
 
-    @POST("/v1/images/variations")
-    Single<ImageResult> createImageVariation(@Body RequestBody requestBody);
+  @POST("/v1/images/generations")
+  Single<ImageResult> createImage(@Body CreateImageRequest request);
 
-    @POST("/v1/moderations")
-    Single<ModerationResult> createModeration(@Body ModerationRequest request);
+  @POST("/v1/images/edits")
+  Single<ImageResult> createImageEdit(@Body RequestBody requestBody);
 
-    @Deprecated
-    @GET("v1/engines")
-    Single<OpenAiResponse<Engine>> getEngines();
+  @POST("/v1/images/variations")
+  Single<ImageResult> createImageVariation(@Body RequestBody requestBody);
 
-    @Deprecated
-    @GET("/v1/engines/{engine_id}")
-    Single<Engine> getEngine(@Path("engine_id") String engineId);
+  @POST("/v1/moderations")
+  Single<ModerationResult> createModeration(@Body ModerationRequest request);
+
+  @Deprecated
+  @GET("v1/engines")
+  Single<OpenAiResponse<Engine>> getEngines();
+
+  @Deprecated
+  @GET("/v1/engines/{engine_id}")
+  Single<Engine> getEngine(@Path("engine_id") String engineId);
+
 }

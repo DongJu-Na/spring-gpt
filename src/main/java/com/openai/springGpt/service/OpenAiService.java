@@ -23,6 +23,7 @@ import com.openai.springGpt.dto.edit.EditRequest;
 import com.openai.springGpt.dto.edit.EditResult;
 import com.openai.springGpt.dto.embedding.EmbeddingRequest;
 import com.openai.springGpt.dto.embedding.EmbeddingResult;
+import com.openai.springGpt.dto.engine.Engine;
 import com.openai.springGpt.dto.file.File;
 import com.openai.springGpt.dto.finetune.FineTuneEvent;
 import com.openai.springGpt.dto.finetune.FineTuneRequest;
@@ -46,229 +47,246 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import static java.time.Duration.ofSeconds;
+
 public class OpenAiService {
 
-    private static final String BASE_URL = "https://api.openai.com/";
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
-    private static final ObjectMapper errorMapper = defaultObjectMapper();
+	private static final String BASE_URL = "https://api.openai.com/";
 
-    private final OpenAiApi api;
+  final OpenAiApi api;
 
-    /**
-     * Creates a new OpenAiService that wraps OpenAiApi
-     *
-     * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-     */
-    public OpenAiService(final String token) {
-        this(token, DEFAULT_TIMEOUT);
-    }
+  /**
+   * Creates a new OpenAiService that wraps OpenAiApi
+   *
+   * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+   */
+  public OpenAiService(final String token) {
+      this(token, BASE_URL, ofSeconds(10));
+  }
 
-    /**
-     * Creates a new OpenAiService that wraps OpenAiApi
-     *
-     * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-     * @param timeout http read timeout, Duration.ZERO means no timeout
-     */
-    public OpenAiService(final String token, final Duration timeout) {
-        this(buildApi(token, timeout));
-    }
+  /**
+   * Creates a new OpenAiService that wraps OpenAiApi
+   *
+   * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+   * @param timeout http read timeout in seconds, 0 means no timeout
+   * @deprecated use {@link OpenAiService(String, Duration)}
+   */
+  @Deprecated
+  public OpenAiService(final String token, final int timeout) {
+      this(token, BASE_URL, ofSeconds(timeout));
+  }
 
-    /**
-     * Creates a new OpenAiService that wraps OpenAiApi.
-     * Use this if you need more customization.
-     *
-     * @param api OpenAiApi instance to use for all methods
-     */
-    public OpenAiService(final OpenAiApi api) {
-        this.api = api;
-    }
+  /**
+   * Creates a new OpenAiService that wraps OpenAiApi
+   *
+   * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+   * @param timeout http read timeout, Duration.ZERO means no timeout
+   */
+  public OpenAiService(final String token, final Duration timeout) {
+      this(token, BASE_URL, timeout);
+  }
 
-    public List<Model> listModels() {
-        return execute(api.listModels()).data;
-    }
+  /**
+   * Creates a new OpenAiService that wraps OpenAiApi
+   *
+   * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+   * @param timeout http read timeout, Duration.ZERO means no timeout
+   */
+  public OpenAiService(final String token, final String baseUrl, final Duration timeout) {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+      mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 
-    public Model getModel(String modelId) {
-        return execute(api.getModel(modelId));
-    }
+      OkHttpClient client = new OkHttpClient.Builder()
+              .addInterceptor(new AuthenticationInterceptor(token))
+              .connectionPool(new ConnectionPool(5, 1, TimeUnit.SECONDS))
+              .readTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS)
+              .build();
 
-    public CompletionResult createCompletion(CompletionRequest request) {
-        return execute(api.createCompletion(request));
-    }
-    
-    public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
-        return execute(api.createChatCompletion(request));
-    }
+      Retrofit retrofit = new Retrofit.Builder()
+              .baseUrl(baseUrl)
+              .client(client)
+              .addConverterFactory(JacksonConverterFactory.create(mapper))
+              .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+              .build();
 
-    public EditResult createEdit(EditRequest request) {
-        return execute(api.createEdit(request));
-    }
+      this.api = retrofit.create(OpenAiApi.class);
+  }
 
-    public EmbeddingResult createEmbeddings(EmbeddingRequest request) {
-        return execute(api.createEmbeddings(request));
-    }
+  /**
+   * Creates a new OpenAiService that wraps OpenAiApi
+   *
+   * @param api OpenAiApi instance to use for all methods
+   */
+  public OpenAiService(final OpenAiApi api) {
+      this.api = api;
+  }
 
-    public List<File> listFiles() {
-        return execute(api.listFiles()).data;
-    }
+  public List<Model> listModels() {
+      return api.listModels().blockingGet().data;
+  }
 
-    public File uploadFile(String purpose, String filepath) {
-        java.io.File file = new java.io.File(filepath);
-        RequestBody purposeBody = RequestBody.create(okhttp3.MultipartBody.FORM, purpose);
-        RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
+  public Model getModel(String modelId) {
+      return api.getModel(modelId).blockingGet();
+  }
 
-        return execute(api.uploadFile(purposeBody, body));
-    }
+  public CompletionResult createCompletion(CompletionRequest request) {
+      return api.createCompletion(request).blockingGet();
+  }
+  
+  public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
+      return api.createChatCompletion(request).blockingGet();
+  }
 
-    public DeleteResult deleteFile(String fileId) {
-        return execute(api.deleteFile(fileId));
-    }
+  /**
+   * Use {@link OpenAiService#createCompletion(CompletionRequest)} and {@link CompletionRequest#model}instead
+   */
+  @Deprecated
+  public CompletionResult createCompletion(String engineId, CompletionRequest request) {
+      return api.createCompletion(engineId, request).blockingGet();
+  }
 
-    public File retrieveFile(String fileId) {
-        return execute(api.retrieveFile(fileId));
-    }
+  public EditResult createEdit(EditRequest request) {
+      return api.createEdit(request).blockingGet();
+  }
 
-    public FineTuneResult createFineTune(FineTuneRequest request) {
-        return execute(api.createFineTune(request));
-    }
+  /**
+   * Use {@link OpenAiService#createEdit(EditRequest)} and {@link EditRequest#model}instead
+   */
+  @Deprecated
+  public EditResult createEdit(String engineId, EditRequest request) {
+      return api.createEdit(engineId, request).blockingGet();
+  }
 
-    public CompletionResult createFineTuneCompletion(CompletionRequest request) {
-        return execute(api.createFineTuneCompletion(request));
-    }
+  public EmbeddingResult createEmbeddings(EmbeddingRequest request) {
+      return api.createEmbeddings(request).blockingGet();
+  }
 
-    public List<FineTuneResult> listFineTunes() {
-        return execute(api.listFineTunes()).data;
-    }
+  /**
+   * Use {@link OpenAiService#createEmbeddings(EmbeddingRequest)} and {@link EmbeddingRequest#model}instead
+   */
+  @Deprecated
+  public EmbeddingResult createEmbeddings(String engineId, EmbeddingRequest request) {
+      return api.createEmbeddings(engineId, request).blockingGet();
+  }
 
-    public FineTuneResult retrieveFineTune(String fineTuneId) {
-        return execute(api.retrieveFineTune(fineTuneId));
-    }
+  public List<File> listFiles() {
+      return api.listFiles().blockingGet().data;
+  }
 
-    public FineTuneResult cancelFineTune(String fineTuneId) {
-        return execute(api.cancelFineTune(fineTuneId));
-    }
+  public File uploadFile(String purpose, String filepath) {
+      java.io.File file = new java.io.File(filepath);
+      RequestBody purposeBody = RequestBody.create(okhttp3.MultipartBody.FORM, purpose);
+      RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
+      MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
 
-    public List<FineTuneEvent> listFineTuneEvents(String fineTuneId) {
-        return execute(api.listFineTuneEvents(fineTuneId)).data;
-    }
+      return api.uploadFile(purposeBody, body).blockingGet();
+  }
 
-    public DeleteResult deleteFineTune(String fineTuneId) {
-        return execute(api.deleteFineTune(fineTuneId));
-    }
+  public DeleteResult deleteFile(String fileId) {
+      return api.deleteFile(fileId).blockingGet();
+  }
 
-    public ImageResult createImage(CreateImageRequest request) {
-        return execute(api.createImage(request));
-    }
+  public File retrieveFile(String fileId) {
+      return api.retrieveFile(fileId).blockingGet();
+  }
 
-    public ImageResult createImageEdit(CreateImageEditRequest request, String imagePath, String maskPath) {
-        java.io.File image = new java.io.File(imagePath);
-        java.io.File mask = null;
-        if (maskPath != null) {
-            mask = new java.io.File(maskPath);
-        }
-        return createImageEdit(request, image, mask);
-    }
+  public FineTuneResult createFineTune(FineTuneRequest request) {
+      return api.createFineTune(request).blockingGet();
+  }
 
-    public ImageResult createImageEdit(CreateImageEditRequest request, java.io.File image, java.io.File mask) {
-        RequestBody imageBody = RequestBody.create(MediaType.parse("image"), image);
+  public CompletionResult createFineTuneCompletion(CompletionRequest request) {
+      return api.createFineTuneCompletion(request).blockingGet();
+  }
 
-        MultipartBody.Builder builder = new MultipartBody.Builder()
-                .setType(MediaType.get("multipart/form-data"))
-                .addFormDataPart("prompt", request.getPrompt())
-                .addFormDataPart("size", request.getSize())
-                .addFormDataPart("response_format", request.getResponseFormat())
-                .addFormDataPart("image", "image", imageBody);
+  public List<FineTuneResult> listFineTunes() {
+      return api.listFineTunes().blockingGet().data;
+  }
 
-        if (request.getN() != null) {
-            builder.addFormDataPart("n", request.getN().toString());
-        }
+  public FineTuneResult retrieveFineTune(String fineTuneId) {
+      return api.retrieveFineTune(fineTuneId).blockingGet();
+  }
 
-        if (mask != null) {
-            RequestBody maskBody = RequestBody.create(MediaType.parse("image"), mask);
-            builder.addFormDataPart("mask", "mask", maskBody);
-        }
+  public FineTuneResult cancelFineTune(String fineTuneId) {
+      return api.cancelFineTune(fineTuneId).blockingGet();
+  }
 
-        return execute(api.createImageEdit(builder.build()));
-    }
+  public List<FineTuneEvent> listFineTuneEvents(String fineTuneId) {
+      return api.listFineTuneEvents(fineTuneId).blockingGet().data;
+  }
 
-    public ImageResult createImageVariation(CreateImageVariationRequest request, String imagePath) {
-        java.io.File image = new java.io.File(imagePath);
-        return createImageVariation(request, image);
-    }
+  public DeleteResult deleteFineTune(String fineTuneId) {
+      return api.deleteFineTune(fineTuneId).blockingGet();
+  }
 
-    public ImageResult createImageVariation(CreateImageVariationRequest request, java.io.File image) {
-        RequestBody imageBody = RequestBody.create(MediaType.parse("image"), image);
+  public ImageResult createImage(CreateImageRequest request) {
+      return api.createImage(request).blockingGet();
+  }
 
-        MultipartBody.Builder builder = new MultipartBody.Builder()
-                .setType(MediaType.get("multipart/form-data"))
-                .addFormDataPart("size", request.getSize())
-                .addFormDataPart("response_format", request.getResponseFormat())
-                .addFormDataPart("image", "image", imageBody);
+  public ImageResult createImageEdit(CreateImageEditRequest request, String imagePath, String maskPath) {
+      java.io.File image = new java.io.File(imagePath);
+      java.io.File mask = null;
+      if (maskPath != null) {
+          mask = new java.io.File(maskPath);
+      }
+      return createImageEdit(request, image, mask);
+  }
 
-        if (request.getN() != null) {
-            builder.addFormDataPart("n", request.getN().toString());
-        }
+  public ImageResult createImageEdit(CreateImageEditRequest request, java.io.File image, java.io.File mask) {
+      RequestBody imageBody = RequestBody.create(MediaType.parse("image"), image);
 
-        return execute(api.createImageVariation(builder.build()));
-    }
+      MultipartBody.Builder builder = new MultipartBody.Builder()
+              .setType(MediaType.get("multipart/form-data"))
+              .addFormDataPart("prompt", request.getPrompt())
+              .addFormDataPart("size", request.getSize())
+              .addFormDataPart("response_format", request.getResponseFormat())
+              .addFormDataPart("image", "image", imageBody);
 
-    public ModerationResult createModeration(ModerationRequest request) {
-        return execute(api.createModeration(request));
-    }
+      if (request.getN() != null) {
+          builder.addFormDataPart("n", request.getN().toString());
+      }
 
-    /**
-     * Calls the Open AI api, returns the response, and parses error messages if the request fails
-     */
-    public static <T> T execute(Single<T> apiCall) {
-        try {
-            return apiCall.blockingGet();
-        } catch (HttpException e) {
-            try {
-                if (e.response() == null || e.response().errorBody() == null) {
-                    throw e;
-                }
-                String errorBody = e.response().errorBody().string();
+      if (mask != null) {
+          RequestBody maskBody = RequestBody.create(MediaType.parse("image"), mask);
+          builder.addFormDataPart("mask", "mask", maskBody);
+      }
 
-                OpenAiError error = errorMapper.readValue(errorBody, OpenAiError.class);
-                throw new OpenAiHttpException(error, e, e.code());
-            } catch (IOException ex) {
-                // couldn't parse OpenAI error
-                throw e;
-            }
-        }
-    }
+      return api.createImageEdit(builder.build()).blockingGet();
+  }
 
-    public static OpenAiApi buildApi(String token, Duration timeout) {
-        Objects.requireNonNull(token, "OpenAI token required");
-        ObjectMapper mapper = defaultObjectMapper();
-        OkHttpClient client = defaultClient(token, timeout);
-        Retrofit retrofit = defaultRetrofit(client, mapper);
+  public ImageResult createImageVariation(CreateImageVariationRequest request, String imagePath) {
+      java.io.File image = new java.io.File(imagePath);
+      return createImageVariation(request, image);
+  }
 
-        return retrofit.create(OpenAiApi.class);
-    }
+  public ImageResult createImageVariation(CreateImageVariationRequest request, java.io.File image) {
+      RequestBody imageBody = RequestBody.create(MediaType.parse("image"), image);
 
-    public static ObjectMapper defaultObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-        return mapper;
-    }
+      MultipartBody.Builder builder = new MultipartBody.Builder()
+              .setType(MediaType.get("multipart/form-data"))
+              .addFormDataPart("size", request.getSize())
+              .addFormDataPart("response_format", request.getResponseFormat())
+              .addFormDataPart("image", "image", imageBody);
 
-    public static OkHttpClient defaultClient(String token, Duration timeout) {
-        return new OkHttpClient.Builder()
-                .addInterceptor(new AuthenticationInterceptor(token))
-                .connectionPool(new ConnectionPool(5, 1, TimeUnit.SECONDS))
-                .readTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS)
-                .build();
-    }
+      if (request.getN() != null) {
+          builder.addFormDataPart("n", request.getN().toString());
+      }
 
-    public static Retrofit defaultRetrofit(OkHttpClient client, ObjectMapper mapper) {
-        return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-    }
+      return api.createImageVariation(builder.build()).blockingGet();
+  }
+
+  public ModerationResult createModeration(ModerationRequest request) {
+      return api.createModeration(request).blockingGet();
+  }
+
+  @Deprecated
+  public List<Engine> getEngines() {
+      return api.getEngines().blockingGet().data;
+  }
+
+  @Deprecated
+  public Engine getEngine(String engineId) {
+      return api.getEngine(engineId).blockingGet();
+  }
 }
