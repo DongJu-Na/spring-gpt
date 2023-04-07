@@ -197,8 +197,8 @@ public class ApiController {
 		createImageRequest = CreateImageRequest.builder()
 												.prompt(text) // prompt
 												.n(1) // 갯수 
-												.responseFormat("url") // url or b64_json
-												.size("1024x1024") // "256x256", "512x512", or "1024x1024"
+												.responseFormat("b64_json") // url or 
+												.size("256x256") // "256x256", "512x512", or "1024x1024"
 												.build();
 		
 		ImageResult ir =  service.createImage(createImageRequest);
