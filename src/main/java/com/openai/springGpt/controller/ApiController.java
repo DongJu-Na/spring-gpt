@@ -189,6 +189,13 @@ public class ApiController {
 	@PostMapping("/createImage")
 	public Map<String,Object> createImage(@RequestBody Map<String, Object> requestParam) throws Exception {
 		String text = requestParam.get("text").toString();
+		
+		
+		// 문자열이 한글일 경우 
+		if(text.matches("\"^[ㄱ-ㅎ가-힣]*$\"")) {
+				// 문자열 영어로 번역
+		}
+		
 		Map<String,Object> result = new HashMap<String, Object>();
 		
 		OpenAiService service = new OpenAiService(apiKey,Duration.ofMinutes(5));
