@@ -15,7 +15,11 @@
 	
 	<span style="margin-top : 5%">
 		<input style="width: 95%" type="text" id="txtInp" placeholder="문구를 입력해주세요."/>
-		<button id="generateBtn">생성</button>
+		<button id="generateBtn">생성</button><br/>
+		<span><b>원본 이미지 해상도</b></span>
+		256*256<input  name="resolution" value="256x256" type="radio" />
+		512*512<input  name="resolution" value="512x512" type="radio" />
+		1024*1024<input  name="resolution" value="1024x1024" type="radio" />
 	</span>
 	
 	 <div id="tui-image-editor-container"></div>
@@ -71,8 +75,6 @@ const noImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6
 	        imageEditor.ui.resizeEditor();
 	      };
 		
-	      console.log(imageEditor);
-		
 	})
 
 
@@ -80,6 +82,12 @@ const noImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6
 		
 		if($("#txtInp").val().trim() === ""){
 			alert("문구가 입력되지 않았습니다.");
+			$("#txtInp").focus();
+			return false;
+		}
+		
+		if($("input[name='resolution']:checked").val()  === undefined){
+			alert("선택된 원본 이미지 해상도가 없습니다.");
 			return false;
 		}
 		
@@ -93,7 +101,8 @@ const noImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6
  		    },
  		    dataType : 'json', 
  		    data : JSON.stringify({
-					"text" : $("#txtInp").val()
+					"text" : $("#txtInp").val(),
+					"resolution" : $("input[name='resolution']:checked").val()
 				})
 			,beforeSend: function( xhr ) {
 				imageEditor.loadImageFromURL(noImg, 'CreateImage').then(result => {
@@ -101,7 +110,7 @@ const noImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6
 				     console.log('new : ' + result.newWidth + ', ' + result.newHeight);
 				});
 			}
- 		    ,success : function(data, textStatus, jqXHR ) {
+ 		    ,success : function(data, textStatus, jqXHR ) { 
  		    	console.log(data);
  		    	if(data){
  		    		//$("#imgPrv").prop("src",data["data"][0].url + "");

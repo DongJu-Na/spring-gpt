@@ -189,6 +189,7 @@ public class ApiController {
 	@PostMapping("/createImage")
 	public Map<String,Object> createImage(@RequestBody Map<String, Object> requestParam) throws Exception {
 		String text = requestParam.get("text").toString();
+		String resolution = requestParam.get("resolution").toString();
 		
 		
 		// 문자열이 한글일 경우 
@@ -205,7 +206,7 @@ public class ApiController {
 												.prompt(text) // prompt
 												.n(1) // 갯수 
 												.responseFormat("b64_json") // url or 
-												.size("256x256") // "256x256", "512x512", or "1024x1024"
+												.size(resolution) // "256x256", "512x512", or "1024x1024"
 												.build();
 		
 		ImageResult ir =  service.createImage(createImageRequest);
